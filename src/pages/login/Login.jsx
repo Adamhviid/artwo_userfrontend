@@ -10,32 +10,16 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (event) => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
-      // WE NEED THE ENDPOINT IN ORDER FOR THIS TO WORK :)))
-      //   const response = await axios.login("http://localhost:8080/login", {
-      //     firstname: firstname,
-      //     lastname: lastname,
-      //     username: username,
-      //     email: email,
-      //     password: password,
-      //   });
-
-      //   console.log(response);
-
-      // Delete this block of code when the endpoint is ready :)))
-
-      const data = {
-        firstname: firstname,
-        lastname: lastname,
+      //WE NEED THE ENDPOINT IN ORDER FOR THIS TO WORK :)))
+      const response = await axios.post("http://localhost:8080/auth/login", {
         username: username,
-        email: email,
         password: password,
-      };
+      });
 
-      console.log(data);
-
-      // ^^ This is where we have to delete shit
+      console.log(response);
 
       setFirstname("");
       setLastname("");
@@ -105,10 +89,7 @@ const Login = () => {
               className="button"
               type="submit"
               value="Login"
-              onClick={(event) => {
-                event.preventDefault();
-                handleLogin();
-              }}
+              onClick={(e) => handleLogin(e)}
             />
           </form>
         </div>
