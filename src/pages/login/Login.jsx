@@ -13,14 +13,21 @@ const Login = () => {
               type="text"
               id="firstname"
               name="firstname"
-              placeholder="First name"
+              placeholder="Fornavn"
             />
             <input
               className="text"
               type="text"
               id="lastname"
               name="lastname"
-              placeholder="Last name"
+              placeholder="Efternavn"
+            />
+            <input
+              className="text"
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Brugernavn"
             />
             <input
               className="text"
