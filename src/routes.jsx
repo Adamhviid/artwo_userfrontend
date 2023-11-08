@@ -1,13 +1,13 @@
-import App from "./App.jsx";
-import Login from "./pages/login/Login";
+import Login from "./pages/login/login";
+import Profile from "./pages/profile/profile";
 
 export default [
     {
-        path: "/",
-        element: <App />,
-    },
-    {
         path: "/login",
         element: <Login />,
+    },
+    {
+        path: "/profile",
+        element: <Profile />,
     },
 ];

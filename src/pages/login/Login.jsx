@@ -1,34 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./login.css";
+
 import lognobackground from "../../images/logonobackground.png";
 
 const Login = () => {
-    const [firstname, setFirstname] = useState("");
-    const [lastname, setLastname] = useState("");
     const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
+    /* const [email, setEmail] = useState(""); */
     const [password, setPassword] = useState("");
+
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            //WE NEED THE ENDPOINT IN ORDER FOR THIS TO WORK :)))
-            const response = await axios.post(
-                "http://localhost:8080/user/login",
-                {
+            await axios
+                .post("http://localhost:8080/user/login", {
                     username: username,
                     password: password,
-                }
-            );
-
-            console.log(response.data);
-
-            setFirstname("");
-            setLastname("");
-            setUsername("");
-            setEmail("");
-            setPassword("");
+                })
+                .then((response) => {
+                    localStorage.setItem("token", response.data.token);
+                    localStorage.setItem("userId", response.data.id);
+                    navigate("/profile");
+                });
         } catch (error) {
             console.log(error);
         }
@@ -45,28 +41,6 @@ const Login = () => {
                             <input
                                 className="text"
                                 type="text"
-                                id="firstname"
-                                name="firstname"
-                                placeholder="Fornavn"
-                                value={firstname}
-                                onChange={(event) =>
-                                    setFirstname(event.target.value)
-                                }
-                            />
-                            <input
-                                className="text"
-                                type="text"
-                                id="lastname"
-                                name="lastname"
-                                placeholder="Efternavn"
-                                value={lastname}
-                                onChange={(event) =>
-                                    setLastname(event.target.value)
-                                }
-                            />
-                            <input
-                                className="text"
-                                type="text"
                                 id="username"
                                 name="username"
                                 placeholder="Brugernavn"
@@ -75,7 +49,7 @@ const Login = () => {
                                     setUsername(event.target.value)
                                 }
                             />
-                            <input
+                            {/*  <input
                                 className="text"
                                 type="email"
                                 id="email"
@@ -85,7 +59,7 @@ const Login = () => {
                                 onChange={(event) =>
                                     setEmail(event.target.value)
                                 }
-                            />
+                            /> */}
                             <input
                                 className="text"
                                 type="password"
