@@ -18,7 +18,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link, useNavigate } from "react-router-dom";
 
-import lognobackground from "../../images/ARTWOlogoNoBackgroundNoCenterholeV2.png";
+import lognobackground from "../images/ARTWOlogoNoBackgroundNoCenterholeV2.png";
 
 const pages = [
     { label: "Brugere", url: "/users" },
@@ -111,22 +111,6 @@ const Nav = () => {
                                 marginTop: "5px",
                             }}
                         />
-                        {/* <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{
-                                mr: 2,
-                                fontFamily: "monospace",
-                                fontWeight: 700,
-                                letterSpacing: ".3rem",
-                                color: "inherit",
-                                textDecoration: "none",
-                                cursor: "pointer",
-                            }}
-                        >
-                            ARTWO
-                        </Typography> */}
                     </Link>
                     <Box
                         sx={{
