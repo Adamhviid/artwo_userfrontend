@@ -1,20 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import "./index.css";
 import Container from "@mui/material/Container";
 
-import routes from "./routes";
+import Login from "./pages/login/Login";
+import Profile from "./pages/profile/Profile";
 import Navbar from "./components/navbar/navbar";
 
-const router = createBrowserRouter(routes);
-
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        
-        <Navbar />
+    <BrowserRouter>
+        <div style={{ marginBottom: "100px" }}>
+            <Navbar />
+        </div>
         <Container maxWidth="md">
-            <RouterProvider router={router} />
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/profile" element={<Profile />} />
+            </Routes>
         </Container>
-    </React.StrictMode>
+    </BrowserRouter>
 );
