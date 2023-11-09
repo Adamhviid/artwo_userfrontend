@@ -8,26 +8,35 @@ const FrontPage = () => {
 
     useEffect(() => {
         fetchPosts();
-    }, [posts, setPosts]);
+    }, []);
 
     async function fetchPosts() {
         await axios.get("http://localhost:8080/post/all").then((response) => {
             const likes = response.data.likes;
             let tmpPosts = response.data.posts;
+            let tmpComments = response.data.comments;
 
             tmpPosts.forEach((post) => {
-                post.userLiked = false;
                 let totalLikes = 0;
+                post.comments = [];
+
+                post.userLiked = false;
                 likes.forEach((like) => {
                     if (like.postId === post.id) {
                         totalLikes++;
 
-                        if(like.userId == localStorage.getItem("userId")) {
+                        if (like.userId == localStorage.getItem("userId")) {
                             post.userLiked = true;
                         }
                     }
                 });
                 post.totalLikes = totalLikes++;
+
+                tmpComments.forEach((comment) => {
+                    if (comment.postId === post.id) {
+                        post.comments.push(comment);
+                    }
+                });
             });
             setPosts(tmpPosts);
         });
@@ -35,7 +44,7 @@ const FrontPage = () => {
 
     return (
         <div>
-            <h1>FrontPage</h1>
+            <h1>Frontpage</h1>
             {posts.map((post) => (
                 <Post
                     key={post.id}
@@ -46,6 +55,7 @@ const FrontPage = () => {
                     date={post.updatedAt}
                     description={post.content}
                     image={selfie}
+                    comments={post.comments}
                 />
             ))}
         </div>

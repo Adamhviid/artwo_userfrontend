@@ -11,15 +11,30 @@ import {
     Avatar,
     IconButton,
     Typography,
+    TextField,
+    Grid,
 } from "@mui/material";
-import {
-    Favorite as FavoriteIcon,
-    Share as ShareIcon,
-} from "@mui/icons-material";
+import { Favorite as FavoriteIcon } from "@mui/icons-material";
+import SendIcon from "@mui/icons-material/Send";
+
+import Comment from "./Comment";
 
 const Post = (props) => {
-    const { id, userLiked, totalLikes, title, date, description, image } = props;
+    const {
+        id,
+        userLiked,
+        totalLikes,
+        title,
+        date,
+        description,
+        image,
+        comments,
+    } = props;
+
     const [like, setLike] = useState(userLiked);
+    const [totalLikesState, setTotalLikesState] = useState(totalLikes);
+    const [comment, setComment] = useState();
+    const [commentsState, setCommentsState] = useState(comments);
 
     async function handleLike() {
         if (!localStorage.getItem("userId")) {
@@ -44,6 +59,7 @@ const Post = (props) => {
                 .then((response) => {
                     if (response.status === 200) {
                         setLike(true);
+                        setTotalLikesState(totalLikesState + 1);
                     } else {
                         alert("Noget gik galt");
                     }
@@ -65,6 +81,7 @@ const Post = (props) => {
                 .then((response) => {
                     if (response.status === 200) {
                         setLike(false);
+                        setTotalLikesState(totalLikesState - 1);
                     } else {
                         alert("Noget gik galt");
                     }
@@ -72,7 +89,7 @@ const Post = (props) => {
         }
     }
 
-    const formatDate = (dateString) => {
+    function formatDate(dateString) {
         const date = new Date(dateString);
         return date.toLocaleDateString("en-GB", {
             day: "2-digit",
@@ -81,22 +98,66 @@ const Post = (props) => {
             hour: "2-digit",
             minute: "2-digit",
         });
-    };
+    }
+
+    function commentSection() {
+        return commentsState.map((comment) => (
+            <Comment
+                key={comment.id}
+                userId={comment.userId}
+                date={comment.updatedAt}
+                comment={comment.content}
+            />
+        ));
+    }
+
+    async function handleComment() {
+        console.log(id, comment);
+        await axios
+            .post(
+                "http://localhost:8080/post/comment/" + id,
+                {
+                    userId: localStorage.getItem("userId"),
+                    postId: id,
+                    content: comment,
+                },
+                {
+                    headers: {
+                        token: localStorage.getItem("token"),
+                    },
+                }
+            )
+            .then((response) => {
+                if (response.status === 200) {
+                    setCommentsState([
+                        ...commentsState,
+                        {
+                            id: response.data.id,
+                            userId: localStorage.getItem("userId"),
+                            updatedAt: new Date(),
+                            content: comment,
+                        },
+                    ]);
+                } else {
+                    alert("Noget gik galt");
+                }
+            });
+    }
 
     return (
-        <Card sx={{ width: "350px", margin: "20px" }}>
+        <Card sx={{ width: "550px", margin: "20px" }}>
             <CardHeader
                 avatar={<Avatar aria-label="profilePicture">Bro</Avatar>}
                 title={title}
                 subheader={formatDate(date)}
             />
-            {/* <CardMedia
+            <CardMedia
                 component="img"
-                height="194"
+                height="350"
                 image={image}
                 alt="Post"
-                sx={{ objectFit: "contain", padding: "10px" }}
-            /> */}
+                sx={{ objectFit: "contain" }}
+            />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
                     {description}
@@ -112,11 +173,41 @@ const Post = (props) => {
                     ) : (
                         <FavoriteIcon style={{ color: "grey" }} />
                     )}
-                </IconButton> {totalLikes} likes
-                <IconButton aria-label="share">
-                    <ShareIcon />
-                </IconButton>
+                </IconButton>{" "}
+                {totalLikesState} likes
             </CardActions>
+
+            {commentSection()}
+
+            {localStorage.getItem("userId") ? (
+                <Card sx={{ padding: "20px" }}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={11}>
+                            <TextField
+                                id="input-with-icon-textfield"
+                                label="Ny kommentar"
+                                fullWidth
+                                multiline
+                                variant="standard"
+                                onChange={(e) => setComment(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={1}>
+                            <SendIcon
+                                sx={{
+                                    float: "right",
+                                    width: "30px",
+                                    height: "auto",
+                                    paddingTop: "10px",
+                                    color: "rgb(97, 180, 76)",
+                                    cursor: "pointer",
+                                }}
+                                onClick={() => handleComment()}
+                            />
+                        </Grid>
+                    </Grid>
+                </Card>
+            ) : null}
         </Card>
     );
 };
@@ -129,6 +220,7 @@ Post.propTypes = {
     date: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
+    comments: PropTypes.array.isRequired,
 };
 
 export default Post;

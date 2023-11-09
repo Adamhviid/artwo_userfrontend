@@ -29,7 +29,7 @@ const Login = () => {
                 .then((response) => {
                     localStorage.setItem("token", response.data.token);
                     localStorage.setItem("userId", response.data.id);
-                    navigate("/profile");
+                    navigate("/");
                 });
         } catch (error) {
             console.log(error);
