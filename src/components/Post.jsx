@@ -18,8 +18,8 @@ import {
 } from "@mui/icons-material";
 
 const Post = (props) => {
-    const { id, isLiked, title, date, description, image } = props;
-    const [like, setLike] = useState(isLiked);
+    const { id, userLiked, totalLikes, title, date, description, image } = props;
+    const [like, setLike] = useState(userLiked);
 
     async function handleLike() {
         if (!localStorage.getItem("userId")) {
@@ -90,13 +90,13 @@ const Post = (props) => {
                 title={title}
                 subheader={formatDate(date)}
             />
-            <CardMedia
+            {/* <CardMedia
                 component="img"
                 height="194"
                 image={image}
                 alt="Post"
                 sx={{ objectFit: "contain", padding: "10px" }}
-            />
+            /> */}
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
                     {description}
@@ -112,7 +112,7 @@ const Post = (props) => {
                     ) : (
                         <FavoriteIcon style={{ color: "grey" }} />
                     )}
-                </IconButton>
+                </IconButton> {totalLikes} likes
                 <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton>
@@ -123,7 +123,8 @@ const Post = (props) => {
 
 Post.propTypes = {
     id: PropTypes.number.isRequired,
-    isLiked: PropTypes.bool.isRequired,
+    userLiked: PropTypes.bool.isRequired,
+    totalLikes: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
