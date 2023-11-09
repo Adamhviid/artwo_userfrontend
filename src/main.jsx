@@ -6,12 +6,12 @@ import Container from "@mui/material/Container";
 
 import Login from "./pages/login/Login";
 import Profile from "./pages/profile/Profile";
-import Navbar from "./components/navbar/navbar";
+import Nav from "./components/nav/Nav";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <BrowserRouter>
         <div style={{ marginBottom: "100px" }}>
-            <Navbar />
+            <Nav />
         </div>
         <Container maxWidth="md">
             <Routes>

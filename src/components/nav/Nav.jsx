@@ -29,7 +29,7 @@ const settings = [
     { label: "Logout", url: "/logout" },
 ];
 
-const ResponsiveAppBar = () => {
+const Nav = () => {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [logginedIn, setLogginedIn] = useState(false);
@@ -217,4 +217,4 @@ const ResponsiveAppBar = () => {
         </AppBar>
     );
 };
-export default ResponsiveAppBar;
+export default Nav;
