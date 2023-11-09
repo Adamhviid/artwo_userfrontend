@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./login.css";
 
-import lognobackground from "../../images/logonobackground.png";
+import lognobackground from "../../images/ARTWOlogoNoBackgroundNoCenterholeV2.png";
 
 const Login = () => {
     const [username, setUsername] = useState("");
