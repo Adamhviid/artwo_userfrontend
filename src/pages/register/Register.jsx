@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./register.css";
-
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateField } from "@mui/x-date-pickers/DateField";
 import {
     Button,
     CssBaseline,
@@ -13,10 +15,6 @@ import {
     Typography,
     Container,
 } from "@mui/material";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateField } from "@mui/x-date-pickers/DateField";
 
 const Register = () => {
     const [username, setUsername] = useState("");
@@ -33,9 +31,17 @@ const Register = () => {
         e.preventDefault();
         try {
             if (password !== passwordCheck) {
-                alert("Passwords er ikke ens");
+                alert("Kodeord er ikke ens");
                 return;
             }
+
+            const tenYearsCheck = new Date();
+            tenYearsCheck.setFullYear(tenYearsCheck.getFullYear() - 10);
+            if (new Date(dateOfBirth) > tenYearsCheck) {
+                alert("Man skal være 10 år for at oprette en bruger");
+                return;
+            }
+
             await axios
                 .post("http://localhost:8080/user/register", {
                     username: username,
@@ -136,10 +142,10 @@ const Register = () => {
                                         id="dateOfBirth"
                                         autoComplete="bday"
                                         value={dateOfBirth}
+                                        format="DD/MM/YYYY"
                                         onChange={(date) =>
                                             setDateOfBirth(date)
                                         }
-                                        autoFocus={false}
                                     />
                                 </DemoContainer>
                             </LocalizationProvider>
