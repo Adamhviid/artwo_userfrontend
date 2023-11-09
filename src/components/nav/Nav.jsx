@@ -16,7 +16,7 @@ import {
     ListItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const pages = [
     { label: "Brugere", url: "/users" },
@@ -26,7 +26,6 @@ const pages = [
 const settings = [
     { label: "Mine posts", url: "profile/posts" },
     { label: "Profil", url: "/profile" },
-    { label: "Logout", url: "/logout" },
 ];
 
 const Nav = () => {
@@ -34,12 +33,14 @@ const Nav = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [logginedIn, setLogginedIn] = useState(false);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
             setLogginedIn(true);
         }
-    }, []);
+    }, [logginedIn, navigate]);
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -51,6 +52,12 @@ const Nav = () => {
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
+    };
+
+    const handleLogout = () => {
+        localStorage.clear();
+        setLogginedIn(false);
+        navigate("/");
     };
 
     const drawer = (
@@ -183,11 +190,16 @@ const Nav = () => {
                                             </MenuItem>
                                         </Link>
                                     ))}
+                                    <MenuItem onClick={handleLogout}>
+                                        <Typography textAlign="center">
+                                            Logout
+                                        </Typography>
+                                    </MenuItem>
                                 </Menu>
                             </Box>
                         ) : (
                             <Link
-                                to="/"
+                                to="/login"
                                 style={{
                                     textDecoration: "none",
                                     color: "inherit",

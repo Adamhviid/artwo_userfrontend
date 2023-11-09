@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </div>
         <Container maxWidth="md">
             <Routes>
-                <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/profile" element={<Profile />} />
             </Routes>
