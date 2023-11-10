@@ -112,7 +112,6 @@ const Post = (props) => {
     }
 
     async function handleComment() {
-        console.log(id, comment);
         await axios
             .post(
                 "http://localhost:8080/post/comment/" + id,

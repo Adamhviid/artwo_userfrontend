@@ -19,8 +19,8 @@ const FrontPage = () => {
             tmpPosts.forEach((post) => {
                 let totalLikes = 0;
                 post.comments = [];
-
                 post.userLiked = false;
+
                 likes.forEach((like) => {
                     if (like.postId === post.id) {
                         totalLikes++;
