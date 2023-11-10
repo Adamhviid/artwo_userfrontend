@@ -1,20 +1,32 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Pagination, Stack } from "@mui/material";
+
 import Post from "../../components/Post";
 import selfie from "../../images/DuckFace.jpeg";
 
 const FrontPage = () => {
     const [posts, setPosts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const pageSize = 2; 
 
     useEffect(() => {
         fetchPosts();
-    }, []);
+    }, [currentPage]);
 
     async function fetchPosts() {
-        await axios.get("http://localhost:8080/post/all").then((response) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8080/post/all?page=${currentPage}&pageSize=${pageSize}`
+            );
             const likes = response.data.likes;
             let tmpPosts = response.data.posts;
             let tmpComments = response.data.comments;
+            const totalCount = response.data.postPages;
+
+            const calculatedTotalPages = Math.ceil(totalCount / pageSize);
+            setTotalPages(calculatedTotalPages);
 
             tmpPosts.forEach((post) => {
                 let totalLikes = 0;
@@ -39,7 +51,9 @@ const FrontPage = () => {
                 });
             });
             setPosts(tmpPosts);
-        });
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+        }
     }
 
     return (
@@ -58,6 +72,14 @@ const FrontPage = () => {
                     comments={post.comments}
                 />
             ))}
+            <Stack spacing={2} sx={{float: 'right', marginBottom: '50px'}}>
+                <Pagination
+                    count={totalPages}
+                    shape="rounded"
+                    page={currentPage}
+                    onChange={(event, page) => setCurrentPage(page)}
+                />
+            </Stack>
         </div>
     );
 };
