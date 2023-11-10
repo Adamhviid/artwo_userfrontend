@@ -14,11 +14,7 @@ const Comment = (props) => {
 
     async function fetchUser() {
         await axios
-            .get("http://localhost:8080/user/get/" + userId, {
-                headers: {
-                    token: localStorage.getItem("token"),
-                },
-            })
+            .get("http://localhost:8080/user/get/" + userId)
             .then((response) => {
                 setName(response.data.username);
             });
@@ -49,7 +45,6 @@ const Comment = (props) => {
     return (
         <Paper
             sx={{
-                
                 padding: "0px 1px 1px 10px",
                 margin: "5px",
             }}

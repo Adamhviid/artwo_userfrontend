@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Pagination, Stack } from "@mui/material";
 
+import { useAuth } from "../../AuthContext";
 import Post from "../../components/Post";
 import selfie from "../../images/DuckFace.jpeg";
 
@@ -9,7 +10,9 @@ const FrontPage = () => {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const pageSize = 2; 
+    const pageSize = 2;
+
+    const { state } = useAuth();
 
     useEffect(() => {
         fetchPosts();
@@ -20,29 +23,51 @@ const FrontPage = () => {
             const response = await axios.get(
                 `http://localhost:8080/post/all?page=${currentPage}&pageSize=${pageSize}`
             );
-            const likes = response.data.likes;
-            let tmpPosts = response.data.posts;
-            let tmpComments = response.data.comments;
             const totalCount = response.data.postPages;
+            const likes = response.data.likes;
+            const followers = response.data.followers;
+            const tmpComments = response.data.comments;
+            const tmpPosts = response.data.posts;
 
             const calculatedTotalPages = Math.ceil(totalCount / pageSize);
             setTotalPages(calculatedTotalPages);
 
             tmpPosts.forEach((post) => {
                 let totalLikes = 0;
-                post.comments = [];
                 post.userLiked = false;
+
+                let totalFollowers = 0;
+                post.userFollowed = false;
+
+                post.comments = [];
 
                 likes.forEach((like) => {
                     if (like.postId === post.id) {
                         totalLikes++;
 
-                        if (like.userId == localStorage.getItem("userId")) {
+                        if (
+                            state.isAuthenticated &&
+                            like.userId == state.user.id
+                        ) {
                             post.userLiked = true;
                         }
                     }
                 });
+                followers.forEach((follower) => {
+                    if (follower.followId == post.userId) {
+                        totalFollowers++;
+
+                        if (
+                            state.isAuthenticated &&
+                            follower.userId == state.user.id
+                        ) {
+                            post.userFollowed = true;
+                        }
+                    }
+                });
+
                 post.totalLikes = totalLikes++;
+                post.totalFollowers = totalFollowers++;
 
                 tmpComments.forEach((comment) => {
                     if (comment.postId === post.id) {
@@ -63,8 +88,11 @@ const FrontPage = () => {
                 <Post
                     key={post.id}
                     id={post.id}
+                    userId={post.userId}
                     totalLikes={post.totalLikes}
                     userLiked={post.userLiked}
+                    totalFollowers={post.totalFollowers}
+                    userFollowed={post.userFollowed}
                     title={post.title}
                     date={post.updatedAt}
                     description={post.content}
@@ -72,7 +100,7 @@ const FrontPage = () => {
                     comments={post.comments}
                 />
             ))}
-            <Stack spacing={2} sx={{float: 'right', marginBottom: '50px'}}>
+            <Stack spacing={2} sx={{ float: "right", marginBottom: "50px" }}>
                 <Pagination
                     count={totalPages}
                     shape="rounded"

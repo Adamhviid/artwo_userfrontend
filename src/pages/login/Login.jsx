@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -12,11 +12,20 @@ import {
     Container,
 } from "@mui/material";
 
+import { useAuth } from "../../AuthContext";
+
 const Login = () => {
     const [username, setUsername] = useState("");
-    /* const [email, setEmail] = useState(""); */
     const [password, setPassword] = useState("");
+
+    const { login, state } = useAuth();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (state.user) {
+            navigate("/" + state.user.username);
+        }
+    }, [state, navigate]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -27,12 +36,17 @@ const Login = () => {
                     password: password,
                 })
                 .then((response) => {
-                    localStorage.setItem("token", response.data.token);
-                    localStorage.setItem("userId", response.data.id);
-                    navigate("/profile");
+                    login(response.data);
+                    navigate("/" + response.data.username);
                 });
         } catch (error) {
             console.log(error);
+        }
+    };
+
+    const handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            handleLogin(event);
         }
     };
 
@@ -63,21 +77,9 @@ const Login = () => {
                                 onChange={(event) =>
                                     setUsername(event.target.value)
                                 }
+                                onKeyDown={handleKeyPress}
                             />
                         </Grid>
-                        {/* <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Adresse"
-                                name="email"
-                                autoComplete="email"
-                                onChange={(event) =>
-                                    setEmail(event.target.value)
-                                }
-                            />
-                        </Grid> */}
                         <Grid item xs={12}>
                             <TextField
                                 required
@@ -90,15 +92,16 @@ const Login = () => {
                                 onChange={(event) =>
                                     setPassword(event.target.value)
                                 }
+                                onKeyDown={handleKeyPress}
                             />
                         </Grid>
                     </Grid>
                     <Button
-                        type="submit"
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                         style={{ backgroundColor: "rgb(97, 180, 76)" }}
+                        onClick={(e) => handleLogin(e)}
                     >
                         Log ind
                     </Button>

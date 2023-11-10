@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 import lognobackground from "../images/ARTWOlogoNoBackgroundNoCenterholeV2.png";
 
@@ -27,7 +28,7 @@ const pages = [
 ];
 const settings = [
     { label: "Mine posts", url: "profile/posts" },
-    { label: "Profil", url: "/profile" },
+    { label: "Profil", url: "/adam" },
 ];
 
 const Nav = () => {
@@ -35,14 +36,14 @@ const Nav = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [logginedIn, setLogginedIn] = useState(false);
 
+    const { state, logout } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
+        if (state.user) {
             setLogginedIn(true);
         }
-    }, [logginedIn, navigate]);
+    }, [state.user]);
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -57,7 +58,7 @@ const Nav = () => {
     };
 
     const handleLogout = () => {
-        localStorage.clear();
+        logout();
         setLogginedIn(false);
         navigate("/");
     };
@@ -109,6 +110,7 @@ const Nav = () => {
                             style={{
                                 height: "50px",
                                 marginTop: "5px",
+                                cursor: "pointer",
                             }}
                         />
                     </Link>
