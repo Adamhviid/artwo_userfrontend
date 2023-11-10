@@ -117,7 +117,7 @@ const Register = () => {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Email Adresse"
                 name="email"
                 autoComplete="email"
                 onChange={(event) => setEmail(event.target.value)}
@@ -157,7 +157,7 @@ const Register = () => {
                 required
                 fullWidth
                 name="passwordCheck"
-                label="Password Check"
+                label="Genindtast Password"
                 type="password"
                 id="passwopasswordCheckrd"
                 onChange={(event) => setPasswordCheck(event.target.value)}
@@ -171,12 +171,11 @@ const Register = () => {
             sx={{ mt: 3, mb: 2 }}
             style={{ backgroundColor: "rgb(97, 180, 76)" }}
           >
-            Sign Up
+            Opret bruger
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid>
               <Link
-                to="/login"
                 variant="body2"
                 onClick={(e) => {
                   e.preventDefault();
