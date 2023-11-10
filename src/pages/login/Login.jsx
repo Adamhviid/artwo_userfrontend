@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./login.css";
-
-import lognobackground from "../../images/ARTWOlogoNoBackgroundNoCenterholeV2.png";
+import {
+  Button,
+  CssBaseline,
+  TextField,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from "@mui/material";
 
 const Login = () => {
-    const [username, setUsername] = useState("");
-    /* const [email, setEmail] = useState(""); */
-    const [password, setPassword] = useState("");
-
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if(localStorage.getItem("token")) {
-            navigate("/profile");
-        }
-    }, [navigate]);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -36,59 +36,83 @@ const Login = () => {
         }
     };
 
-    return (
-        <>
-            <img className="logo" src={lognobackground} alt="Logo" />
-            <div className="loginmain">
-                <h1>Login</h1>
-                <div className="loginform">
-                    <form>
-                        <ul className="logincredentials ">
-                            <input
-                                className="text"
-                                type="text"
-                                id="username"
-                                name="username"
-                                placeholder="Brugernavn"
-                                value={username}
-                                onChange={(event) =>
-                                    setUsername(event.target.value)
-                                }
-                            />
-                            {/*  <input
-                                className="text"
-                                type="email"
-                                id="email"
-                                name="email"
-                                placeholder="E-mail"
-                                value={email}
-                                onChange={(event) =>
-                                    setEmail(event.target.value)
-                                }
-                            /> */}
-                            <input
-                                className="text"
-                                type="password"
-                                id="password"
-                                name="password"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(event) =>
-                                    setPassword(event.target.value)
-                                }
-                            />
-                        </ul>
-                        <input
-                            className="button"
-                            type="submit"
-                            value="Login"
-                            onClick={(e) => handleLogin(e)}
-                        />
-                    </form>
-                </div>
-            </div>
-        </>
-    );
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Lav en bruger her
+        </Typography>
+        <Box component="form" onSubmit={handleLogin} sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="username"
+                label="Brugernavn"
+                name="username"
+                autoFocus
+                onChange={(event) => setUsername(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email Adresse"
+                name="email"
+                autoComplete="email"
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="new-password"
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            style={{ backgroundColor: "rgb(97, 180, 76)" }}
+          >
+            Log ind
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid>
+              <Link
+                variant="body2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/register");
+                }}
+              >
+                Har du endnu ikke en bruger? Registrer her
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
+  );
 };
 
 export default Login;
