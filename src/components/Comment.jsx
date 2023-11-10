@@ -49,7 +49,6 @@ const Comment = (props) => {
     return (
         <Paper
             sx={{
-                
                 padding: "0px 1px 1px 10px",
                 margin: "5px",
             }}
