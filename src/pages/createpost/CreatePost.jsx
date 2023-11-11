@@ -1,8 +1,8 @@
 import React from "react";
 import CombinedForm from "../../components/CombinedForm";
 
-const MyComponent = () => {
-    const handleFormSubmit = (formData) => {
+const CreatePost = () => {
+    const handleFormSubmit = () => {
         // Handle post form submission here
         // formData will contain title, content, and tags
     };
@@ -21,4 +21,4 @@ const MyComponent = () => {
     );
 };
 
-export default MyComponent;
+export default CreatePost;

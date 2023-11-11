@@ -2,7 +2,7 @@ import React from "react";
 import CombinedForm from "../../components/CombinedForm";
 
 const LoginPage = () => {
-    const handleLoginSubmit = (loginData) => {};
+    const handleLoginSubmit = () => {};
 
     return (
         <CombinedForm

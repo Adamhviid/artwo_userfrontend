@@ -2,7 +2,7 @@ import React from "react";
 import CombinedForm from "../../components/CombinedForm";
 
 const Register = () => {
-    const handleRegisterSubmit = (registerData) => {};
+    const handleRegisterSubmit = () => {};
 
     return (
         <CombinedForm
