@@ -36,6 +36,7 @@ const Login = () => {
                     password: password,
                 })
                 .then((response) => {
+                    localStorage.setItem("token", response.data.token);
                     login(response.data);
                     navigate("/" + response.data.username);
                 });

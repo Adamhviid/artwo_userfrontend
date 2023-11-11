@@ -122,7 +122,7 @@ const Comment = (props) => {
 };
 
 Comment.propTypes = {
-    isDeleted: PropTypes.bool.isRequired,
+    isDeleted: PropTypes.bool,
     postId: PropTypes.number.isRequired,
     userId: PropTypes.number.isRequired,
     date: PropTypes.string.isRequired,

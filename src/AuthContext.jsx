@@ -1,4 +1,5 @@
-import { createContext, useReducer, useContext } from "react";
+import { createContext, useReducer, useContext, useEffect } from "react";
+import axios from "axios";
 import PropTypes from "prop-types";
 
 const initialState = {
@@ -32,6 +33,28 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, initialState);
+
+    useEffect(() => {
+        if (localStorage.getItem("token") !== null) {
+            verify();
+        }
+    }, []);
+
+    const verify = async () => {
+        try {
+            await axios
+                .get("http://localhost:8080/user/verify", {
+                    headers: {
+                        token: localStorage.getItem("token"),
+                    },
+                })
+                .then((response) => {
+                    login(response.data);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const login = (user) => {
         dispatch({
