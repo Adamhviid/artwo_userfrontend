@@ -113,6 +113,8 @@ const Post = (props) => {
         return commentsState.map((comment) => (
             <Comment
                 key={comment.id}
+                postId={id}
+                isDeleted={comment.deletedAt}
                 userId={comment.userId}
                 date={comment.updatedAt}
                 comment={comment.content}
