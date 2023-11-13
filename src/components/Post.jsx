@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-
+import { useAuth } from "../AuthContext";
 import {
     Card,
     CardHeader,
@@ -14,15 +14,21 @@ import {
     TextField,
     Grid,
 } from "@mui/material";
+
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
 import SendIcon from "@mui/icons-material/Send";
+import AddIcon from "@mui/icons-material/Add";
+import CheckIcon from "@mui/icons-material/Check";
 
 import Comment from "./Comment";
 
 const Post = (props) => {
     const {
         id,
+        userId,
         userLiked,
+        totalFollowers,
+        userFollowed,
         totalLikes,
         title,
         date,
@@ -31,63 +37,17 @@ const Post = (props) => {
         comments,
     } = props;
 
+    const { state } = useAuth();
+
     const [like, setLike] = useState(userLiked);
     const [totalLikesState, setTotalLikesState] = useState(totalLikes);
+
+    const [followed, setFollowed] = useState(userFollowed);
+    const [totalFollowersState, setTotalFollowersState] =
+        useState(totalFollowers);
+
     const [comment, setComment] = useState();
     const [commentsState, setCommentsState] = useState(comments);
-
-    async function handleLike() {
-        if (!localStorage.getItem("userId")) {
-            alert("You must be logged in to like a post");
-            return;
-        }
-
-        if (!like) {
-            await axios
-                .post(
-                    "http://localhost:8080/post/like/" + id,
-                    {
-                        userId: localStorage.getItem("userId"),
-                        postId: id,
-                    },
-                    {
-                        headers: {
-                            token: localStorage.getItem("token"),
-                        },
-                    }
-                )
-                .then((response) => {
-                    if (response.status === 200) {
-                        setLike(true);
-                        setTotalLikesState(totalLikesState + 1);
-                    } else {
-                        alert("Noget gik galt");
-                    }
-                });
-        } else {
-            await axios
-                .post(
-                    "http://localhost:8080/post/unlike/" + id,
-                    {
-                        userId: localStorage.getItem("userId"),
-                        postId: id,
-                    },
-                    {
-                        headers: {
-                            token: localStorage.getItem("token"),
-                        },
-                    }
-                )
-                .then((response) => {
-                    if (response.status === 200) {
-                        setLike(false);
-                        setTotalLikesState(totalLikesState - 1);
-                    } else {
-                        alert("Noget gik galt");
-                    }
-                });
-        }
-    }
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -100,12 +60,63 @@ const Post = (props) => {
         });
     }
 
+    async function handleLike() {
+        if (state.isAuthenticated != true) {
+            alert("You must be logged in to like a post");
+            return;
+        }
+
+        if (!like) {
+            await axios
+                .post(
+                    `${import.meta.env.VITE_URL}/post/like/` + id,
+                    {
+                        userId: state.user.id,
+                        postId: id,
+                    },
+                    {
+                        headers: {
+                            token: localStorage.getItem("token"),
+                        },
+                    }
+                )
+                .then((response) => {
+                    if (response.status === 200) {
+                        setLike(true);
+                        setTotalLikesState(totalLikesState + 1);
+                    }
+                });
+        } else {
+            await axios
+                .post(
+                    `${import.meta.env.VITE_URL}/post/unlike/` + id,
+                    {
+                        userId: state.user.id,
+                        postId: id,
+                    },
+                    {
+                        headers: {
+                            token: localStorage.getItem("token"),
+                        },
+                    }
+                )
+                .then((response) => {
+                    if (response.status === 200) {
+                        setLike(false);
+                        setTotalLikesState(totalLikesState - 1);
+                    }
+                });
+        }
+    }
+
     function commentSection() {
         return commentsState.map((comment) => (
             <Comment
                 key={comment.id}
+                postId={id}
+                isDeleted={comment.deletedAt}
                 userId={comment.userId}
-                date={comment.updatedAt}
+                date={new Date(comment.updatedAt).toISOString()}
                 comment={comment.content}
             />
         ));
@@ -114,9 +125,9 @@ const Post = (props) => {
     async function handleComment() {
         await axios
             .post(
-                "http://localhost:8080/post/comment/" + id,
+                `${import.meta.env.VITE_URL}/post/comment/` + id,
                 {
-                    userId: localStorage.getItem("userId"),
+                    userId: state.user.id,
                     postId: id,
                     content: comment,
                 },
@@ -132,7 +143,7 @@ const Post = (props) => {
                         ...commentsState,
                         {
                             id: response.data.id,
-                            userId: localStorage.getItem("userId"),
+                            userId: state.user.id,
                             updatedAt: new Date(),
                             content: comment,
                         },
@@ -143,18 +154,63 @@ const Post = (props) => {
             });
     }
 
+    async function handleFollow() {
+        await axios
+            .post(
+                `${import.meta.env.VITE_URL}/user/follow/` + id,
+                {
+                    userId: state.user.id,
+                    followId: userId,
+                },
+                {
+                    headers: {
+                        token: localStorage.getItem("token"),
+                    },
+                }
+            )
+            .then(() => {
+                console.log("followed");
+                setFollowed(true);
+                setTotalFollowersState(totalFollowersState + 1);
+            });
+    }
+
     return (
         <Card sx={{ width: "550px", margin: "20px" }}>
-            <CardHeader
-                avatar={<Avatar aria-label="profilePicture">Bro</Avatar>}
-                title={title}
-                subheader={formatDate(date)}
-            />
+            <Grid container spacing={2}>
+                <Grid item xs={11}>
+                    <CardHeader
+                        avatar={
+                            <Avatar aria-label="profilePicture">Bro</Avatar>
+                        }
+                        title={
+                            "userid:" +
+                            userId +
+                            " (" +
+                            totalFollowersState +
+                            " følgere)"
+                        }
+                        subheader={formatDate(date)}
+                    />
+                </Grid>
+                <Grid item xs={1}>
+                    {!followed ? (
+                        <AddIcon
+                            sx={{ paddingTop: "5px", cursor: "pointer" }}
+                            onClick={() => handleFollow()}
+                        />
+                    ) : (
+                        <CheckIcon sx={{ paddingTop: "5px" }} />
+                    )}
+                </Grid>
+            </Grid>
+            <CardContent>
+                <Typography>{title}</Typography>
+            </CardContent>
             <CardMedia
                 component="img"
                 height="350"
-                image={image}
-                alt="Post"
+                image={""}
                 sx={{ objectFit: "contain" }}
             />
             <CardContent>
@@ -178,7 +234,7 @@ const Post = (props) => {
 
             {commentSection()}
 
-            {localStorage.getItem("userId") ? (
+            {state.isAuthenticated ? (
                 <Card sx={{ padding: "20px" }}>
                     <Grid container spacing={2}>
                         <Grid item xs={11}>
@@ -213,7 +269,10 @@ const Post = (props) => {
 
 Post.propTypes = {
     id: PropTypes.number.isRequired,
+    userId: PropTypes.number.isRequired,
     userLiked: PropTypes.bool.isRequired,
+    totalFollowers: PropTypes.number.isRequired,
+    userFollowed: PropTypes.bool.isRequired,
     totalLikes: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,

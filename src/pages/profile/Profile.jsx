@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
 
 const Profile = () => {
-    const [user, setUser] = useState([]);
+    const { state } = useAuth();
+    const [user, setUser] = useState({});
+    const { username } = useParams();
+
+    /*  const navigate = useNavigate(); */
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            window.location.href = "/login";
+        if (state.isAuthenticated != true) {
+            fetchUser();
         } else {
-            fetchUser(token);
+            setUser(state.user);
         }
-    }, []);
+    }, [username]);
 
-    async function fetchUser(token) {
-        const id = localStorage.getItem("userId");
+    async function fetchUser() {
         await axios
-            .get("http://localhost:8080/user/get/" + id, {
-                headers: {
-                    token: `${token}`,
-                },
-            })
+            .get(`${import.meta.env.VITE_URL}/user/get/` + username)
             .then((response) => {
                 setUser(response.data);
             });
@@ -29,18 +29,10 @@ const Profile = () => {
     return (
         <div>
             <h1>Profile</h1>
-            <h2>Username: {user.username}</h2>
-            <h2>Email: {user.email}</h2>
-
-            <div>
-                <h1>Skift kodeord</h1>
-                <form>
-                    <input type="password" placeholder="Nuværende kodeord" />
-                    <input type="password" placeholder="Nyt kodeord" />
-                    <input type="password" placeholder="Gentag nyt kodeord" />
-                    <button>Skift kodeord</button>
-                </form>
-            </div>
+            <p>Username: {user.username}</p>
+            <p>Email: {user.email}</p>
+            <p>First name: {user.firstName}</p>
+            <p>Last name: {user.lastName}</p>
         </div>
     );
 };

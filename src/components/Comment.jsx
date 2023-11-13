@@ -3,26 +3,37 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInMinutes } from "date-fns";
 import { Avatar, Grid, Paper } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useAuth } from "../AuthContext";
 
 const Comment = (props) => {
-    const { userId, date, comment } = props;
-    const [name, setName] = useState();
+    const { isDeleted, postId, userId, date, comment } = props;
+
+    /* const [name, setName] = useState(); */
+    const [userComment, setUserComment] = useState(false);
+    const [isDeletedState, setIsDeletedState] = useState(false);
+
+    const { state } = useAuth();
 
     useEffect(() => {
-        fetchUser();
+        if (isDeleted != null) {
+            setIsDeletedState(true);
+        }
+        handleDeteIcon();
+
+        /* fetchUser(); */
     }, []);
 
-    async function fetchUser() {
+    /*  async function fetchUser() {
         await axios
-            .get("http://localhost:8080/user/get/" + userId, {
-                headers: {
-                    token: localStorage.getItem("token"),
-                },
-            })
+            .get(`${
+                    import.meta.env.VITE_URL
+                }/user/get/` + userId)
             .then((response) => {
+                console.log(response.data)
                 setName(response.data.username);
             });
-    }
+    } */
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -46,6 +57,35 @@ const Comment = (props) => {
         return ", " + formatDistanceToNow(date) + " ago";
     }
 
+    function handleDeteIcon() {
+        if (state.isAuthenticated && state.user.id == userId) {
+            setUserComment(true);
+        }
+    }
+
+    async function handleDelete() {
+        await axios
+            .post(
+                `${import.meta.env.VITE_URL}/post/uncomment/` + postId,
+                {
+                    userId: state.user.id,
+                    postId: postId,
+                },
+                {
+                    headers: {
+                        token: localStorage.getItem("token"),
+                    },
+                }
+            )
+            .then(() => {
+                setIsDeletedState(true);
+            });
+    }
+
+    if (isDeletedState) {
+        return null;
+    }
+
     return (
         <Paper
             sx={{
@@ -56,6 +96,16 @@ const Comment = (props) => {
             <Grid container direction="row" alignItems="center">
                 <Avatar alt="Remy Sharp" src={"asd"} />
                 <h4 style={{ paddingLeft: "5px" }}>{name}</h4>
+                {userComment ? (
+                    <DeleteIcon
+                        style={{
+                            marginLeft: "auto",
+                            paddingRight: "5px",
+                            cursor: "pointer",
+                        }}
+                        onClick={() => handleDelete()}
+                    />
+                ) : null}
             </Grid>
             <Grid justifyContent="left">
                 <p
@@ -74,6 +124,8 @@ const Comment = (props) => {
 };
 
 Comment.propTypes = {
+    isDeleted: PropTypes.string,
+    postId: PropTypes.number.isRequired,
     userId: PropTypes.number.isRequired,
     date: PropTypes.string.isRequired,
     comment: PropTypes.string.isRequired,
