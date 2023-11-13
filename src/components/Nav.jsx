@@ -20,6 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
 import lognobackground from "../images/ARTWOlogoNoBackgroundNoCenterholeV2.png";
+import Search from "./Search";
 
 const Nav = () => {
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -31,14 +32,10 @@ const Nav = () => {
     if (state.isAuthenticated) {
         settings = [
             { label: "Mine posts", url: "profile/posts" },
-            { label: "Profil", url: "/" + state.user.username },
+            { label: "Profil", url: "/u/" + state.user.username },
         ];
     }
-    const pages = [
-        { label: "Brugere", url: "/users" },
-
-        { label: "Søgning", url: "/search" },
-    ];
+    const pages = [{ label: "Brugere", url: "/users" }];
 
     const navigate = useNavigate();
 
@@ -62,6 +59,7 @@ const Nav = () => {
 
     const handleLogout = () => {
         logout();
+        localStorage.removeItem("token");
         setLogginedIn(false);
         navigate("/");
     };
@@ -144,7 +142,10 @@ const Nav = () => {
                             </Link>
                         ))}
                     </Box>
-                    <div style={{ float: "right" }}>
+
+                    <Search />
+
+                    <div style={{ float: "right", marginLeft: "10px" }}>
                         {logginedIn ? (
                             <Box sx={{ flexGrow: 0 }}>
                                 <Tooltip title="Open settings">

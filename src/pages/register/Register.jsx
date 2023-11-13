@@ -52,7 +52,7 @@ const Register = () => {
                     password: password,
                 })
                 .then(() => {
-                    navigate("/");
+                    navigate("/login");
                 });
         } catch (error) {
             if (error.response.status === 400) {
@@ -75,7 +75,9 @@ const Register = () => {
                 }}
             >
                 <Typography component="h1" variant="h5">
-                    Lav en bruger her
+                    Opret en bruger her
+                    og oplev en verden af muligheder
+                    i Artwo!
                 </Typography>
                 <Box component="form" onSubmit={handleRegister} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>

@@ -23,7 +23,7 @@ const Login = () => {
 
     useEffect(() => {
         if (state.user) {
-            navigate("/" + state.user.username);
+            navigate("/u/" + state.user.username);
         }
     }, [state, navigate]);
 
@@ -38,7 +38,7 @@ const Login = () => {
                 .then((response) => {
                     localStorage.setItem("token", response.data.token);
                     login(response.data);
-                    navigate("/" + response.data.username);
+                    navigate("/u/" + response.data.username);
                 });
         } catch (error) {
             console.log(error);

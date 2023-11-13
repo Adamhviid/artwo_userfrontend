@@ -31,7 +31,7 @@ const Users = () => {
         <Grid container spacing={2}>
             {users.map((user) => (
                 <Grid item xs={12} sm={6} key={user.id}>
-                    <Link to={"/" + user.username} key={user.id}>
+                    <Link to={"/u/" + user.username} key={user.id}>
                         <Card sx={{ display: "flex" }}>
                             <Grid item md={6}>
                                 <Box

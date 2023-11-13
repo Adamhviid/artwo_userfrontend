@@ -43,28 +43,10 @@ export const AuthProvider = ({ children }) => {
                     },
                 })
                 .then((response) => {
-                    console.log(response.data);
                     login(response.data);
                 });
         }
     }, []);
-
-    /* const verify = async () => {
-        try {
-            await axios
-                .get(`${import.meta.env.VITE_URL}/user/verify`, {
-                    headers: {
-                        token: localStorage.getItem("token"),
-                    },
-                })
-                .then((response) => {
-                    console.log(response.data);
-                    login(response.data);
-                });
-        } catch (error) {
-            console.log(error);
-        }
-    }; */
 
     const login = (user) => {
         dispatch({
