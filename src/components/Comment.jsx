@@ -26,7 +26,9 @@ const Comment = (props) => {
 
     /*  async function fetchUser() {
         await axios
-            .get("http://localhost:8080/user/get/" + userId)
+            .get(`${
+                    import.meta.env.VITE_URL
+                }/user/get/` + userId)
             .then((response) => {
                 console.log(response.data)
                 setName(response.data.username);
@@ -64,14 +66,14 @@ const Comment = (props) => {
     async function handleDelete() {
         await axios
             .post(
-                "http://localhost:8080/post/uncomment/" + postId,
+                `${import.meta.env.VITE_URL}/post/uncomment/` + postId,
                 {
                     userId: state.user.id,
                     postId: postId,
                 },
                 {
                     headers: {
-                        token: state.user.token,
+                        token: localStorage.getItem("token"),
                     },
                 }
             )
@@ -122,7 +124,7 @@ const Comment = (props) => {
 };
 
 Comment.propTypes = {
-    isDeleted: PropTypes.bool,
+    isDeleted: PropTypes.string,
     postId: PropTypes.number.isRequired,
     userId: PropTypes.number.isRequired,
     date: PropTypes.string.isRequired,

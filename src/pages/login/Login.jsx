@@ -31,7 +31,7 @@ const Login = () => {
         e.preventDefault();
         try {
             await axios
-                .post("http://localhost:8080/user/login", {
+                .post(`${import.meta.env.VITE_URL}/user/login`, {
                     username: username,
                     password: password,
                 })

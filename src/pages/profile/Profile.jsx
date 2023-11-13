@@ -20,7 +20,7 @@ const Profile = () => {
 
     async function fetchUser() {
         await axios
-            .get("http://localhost:8080/user/get/" + username)
+            .get(`${import.meta.env.VITE_URL}/user/get/` + username)
             .then((response) => {
                 setUser(response.data);
             });

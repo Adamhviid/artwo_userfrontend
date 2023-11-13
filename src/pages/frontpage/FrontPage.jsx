@@ -21,7 +21,9 @@ const FrontPage = () => {
     async function fetchPosts() {
         try {
             const response = await axios.get(
-                `http://localhost:8080/post/all?page=${currentPage}&pageSize=${pageSize}`
+                `${
+                    import.meta.env.VITE_URL
+                }/post/all?page=${currentPage}&pageSize=${pageSize}`
             );
             const totalCount = response.data.postPages;
             const likes = response.data.likes;

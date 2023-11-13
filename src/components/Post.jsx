@@ -69,14 +69,14 @@ const Post = (props) => {
         if (!like) {
             await axios
                 .post(
-                    "http://localhost:8080/post/like/" + id,
+                    `${import.meta.env.VITE_URL}/post/like/` + id,
                     {
                         userId: state.user.id,
                         postId: id,
                     },
                     {
                         headers: {
-                            token: state.user.token,
+                            token: localStorage.getItem("token"),
                         },
                     }
                 )
@@ -89,14 +89,14 @@ const Post = (props) => {
         } else {
             await axios
                 .post(
-                    "http://localhost:8080/post/unlike/" + id,
+                    `${import.meta.env.VITE_URL}/post/unlike/` + id,
                     {
                         userId: state.user.id,
                         postId: id,
                     },
                     {
                         headers: {
-                            token: state.user.token,
+                            token: localStorage.getItem("token"),
                         },
                     }
                 )
@@ -116,7 +116,7 @@ const Post = (props) => {
                 postId={id}
                 isDeleted={comment.deletedAt}
                 userId={comment.userId}
-                date={comment.updatedAt}
+                date={new Date(comment.updatedAt).toISOString()}
                 comment={comment.content}
             />
         ));
@@ -125,7 +125,7 @@ const Post = (props) => {
     async function handleComment() {
         await axios
             .post(
-                "http://localhost:8080/post/comment/" + id,
+                `${import.meta.env.VITE_URL}/post/comment/` + id,
                 {
                     userId: state.user.id,
                     postId: id,
@@ -133,7 +133,7 @@ const Post = (props) => {
                 },
                 {
                     headers: {
-                        token: state.user.token,
+                        token: localStorage.getItem("token"),
                     },
                 }
             )
@@ -157,18 +157,19 @@ const Post = (props) => {
     async function handleFollow() {
         await axios
             .post(
-                "http://localhost:8080/user/follow/" + id,
+                `${import.meta.env.VITE_URL}/user/follow/` + id,
                 {
                     userId: state.user.id,
                     followId: userId,
                 },
                 {
                     headers: {
-                        token: state.user.token,
+                        token: localStorage.getItem("token"),
                     },
                 }
             )
             .then(() => {
+                console.log("followed");
                 setFollowed(true);
                 setTotalFollowersState(totalFollowersState + 1);
             });
@@ -186,14 +187,14 @@ const Post = (props) => {
                             "userid:" +
                             userId +
                             " (" +
-                            totalFollowers +
+                            totalFollowersState +
                             " følgere)"
                         }
                         subheader={formatDate(date)}
                     />
                 </Grid>
                 <Grid item xs={1}>
-                    {!userFollowed ? (
+                    {!followed ? (
                         <AddIcon
                             sx={{ paddingTop: "5px", cursor: "pointer" }}
                             onClick={() => handleFollow()}
