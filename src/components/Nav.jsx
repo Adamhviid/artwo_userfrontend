@@ -27,13 +27,16 @@ const Nav = () => {
     const [logginedIn, setLogginedIn] = useState(false);
     const { state, logout } = useAuth();
 
-    const settings = [
-        { label: "Mine posts", url: "profile/posts" },
-        { label: "Profil", url: state.user.username },
-    ];
+    let settings = [];
+    if (state.isAuthenticated) {
+        settings = [
+            { label: "Mine posts", url: "profile/posts" },
+            { label: "Profil", url: "/" + state.user.username },
+        ];
+    }
     const pages = [
         { label: "Brugere", url: "/users" },
-        
+
         { label: "Søgning", url: "/search" },
     ];
 
