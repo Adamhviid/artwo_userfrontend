@@ -85,7 +85,7 @@ const FrontPage = () => {
 
     return (
         <div>
-            <h1>Frontpage</h1>
+            <h1>Frontpage + rasmus</h1>
             {posts.map((post) => (
                 <Post
                     key={post.id}
