@@ -4,6 +4,7 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import "./index.css";
 import Container from "@mui/material/Container";
 
+import { AuthProvider } from "./AuthContext";
 import Nav from "./components/Nav";
 
 import Login from "./pages/login/Login";
@@ -15,28 +16,30 @@ import Users from "./pages/users/Users";
 import Search from "./pages/search/Search";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <div style={{ marginBottom: "100px" }}>
-      <Nav />
-    </div>
-    <Container
-      maxWidth="md"
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Routes>
-        <Route path="/" element={<FrontPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/opslag" element={<CreatePost />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/search" element={<Search />} />
-      </Routes>
-    </Container>
-  </BrowserRouter>
+    <AuthProvider>
+        <BrowserRouter>
+            <div style={{ marginBottom: "100px" }}>
+                <Nav />
+            </div>
+            <Container
+                maxWidth="md"
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <Routes>
+                    <Route path="/" element={<FrontPage />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/:username" element={<Profile />} />
+                    <Route path="/opslag" element={<CreatePost />} />
+                    <Route path="/users" element={<Users />} />
+                    <Route path="/search" element={<Search />} />
+                </Routes>
+            </Container>
+        </BrowserRouter>
+    </AuthProvider>
 );
