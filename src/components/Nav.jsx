@@ -29,11 +29,11 @@ const Nav = () => {
 
     const settings = [
         { label: "Mine posts", url: "profile/posts" },
-        { label: "Profil", url: state.user.username },
+        // { label: "Profil", url: state.user.username },
     ];
     const pages = [
         { label: "Brugere", url: "/users" },
-        
+
         { label: "Søgning", url: "/search" },
     ];
 

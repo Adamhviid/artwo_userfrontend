@@ -1,0 +1,59 @@
+/* Default styles for the sidebar */
+.sidebar {
+    position: fixed;
+    top: 65px;
+    bottom: 0;
+    left: 0;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    width: 250px;
+    overflow-y: auto;
+}
+
+/* Media query for screens with a width less than or equal to 1000px */
+@media (max-width: 1000px) {
+    .sidebar {
+        display: none; /* Hide the sidebar on small screens */
+    }
+}
+
+/* Media query for screens with a width greater than 1000px */
+@media (min-width: 1001px) {
+    .sidebar {
+        width: 15%; /* Sidebar occupies 15% of the left side */
+    }
+}
+
+.sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+.sidebar li {
+    margin: 10px 0; /* Add some space between the list items */
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+    font-style: italic;
+}
+
+.contact{
+    cursor: pointer;
+    position: absolute;
+    bottom: 2%;
+}
