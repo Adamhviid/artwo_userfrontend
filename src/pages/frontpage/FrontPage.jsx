@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Pagination, Stack } from "@mui/material";
+import { Pagination, Grid } from "@mui/material";
 
 import { useAuth } from "../../AuthContext";
 import Post from "../../components/Post";
@@ -84,33 +84,38 @@ const FrontPage = () => {
     }
 
     return (
-        <div>
-            <h1>Frontpage + rasmus</h1>
-            {posts.map((post) => (
-                <Post
-                    key={post.id}
-                    id={post.id}
-                    userId={post.userId}
-                    totalLikes={post.totalLikes}
-                    userLiked={post.userLiked}
-                    totalFollowers={post.totalFollowers}
-                    userFollowed={post.userFollowed}
-                    title={post.title}
-                    date={post.updatedAt}
-                    description={post.content}
-                    image={selfie}
-                    comments={post.comments}
-                />
-            ))}
-            <Stack spacing={2} sx={{ float: "right", marginBottom: "50px" }}>
-                <Pagination
-                    count={totalPages}
-                    shape="rounded"
-                    page={currentPage}
-                    onChange={(event, page) => setCurrentPage(page)}
-                />
-            </Stack>
-        </div>
+        <Grid container spacing={2} sx={{ width: "70%", overflow: "" }}>
+            <Grid item xs={12}>
+                <h1>Frontpage + rasmus</h1>
+                {posts.map((post) => (
+                    <Post
+                        key={post.id}
+                        id={post.id}
+                        userId={post.userId}
+                        totalLikes={post.totalLikes}
+                        userLiked={post.userLiked}
+                        totalFollowers={post.totalFollowers}
+                        userFollowed={post.userFollowed}
+                        title={post.title}
+                        date={post.updatedAt}
+                        description={post.content}
+                        image={selfie}
+                        comments={post.comments}
+                        sx={{ maxWidth: "100%", overflow: "hidden" }} // Adjust styles for Post component
+                    />
+                ))}
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container justifyContent="center">
+                    <Pagination
+                        count={totalPages}
+                        shape="rounded"
+                        page={currentPage}
+                        onChange={(event, page) => setCurrentPage(page)}
+                    />
+                </Grid>
+            </Grid>
+        </Grid>
     );
 };
 
