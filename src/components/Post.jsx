@@ -184,7 +184,7 @@ const Post = (props) => {
                             <Avatar aria-label="profilePicture">Bro</Avatar>
                         }
                         title={
-                            "userid:" +
+                            "Bruger id:" +
                             userId +
                             " (" +
                             totalFollowersState +
@@ -225,7 +225,7 @@ const Post = (props) => {
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton
-                    aria-label="add to favorites"
+                    aria-label="Tilføj til favorriter"
                     onClick={() => handleLike()}
                 >
                     {like ? (
