@@ -176,7 +176,7 @@ const Post = (props) => {
     }
 
     return (
-        <Card sx={{ width: "550px", margin: "20px" }}>
+        <Card sx={{ width: "100%", margin: "20px" }}>
             <Grid container spacing={2}>
                 <Grid item xs={11}>
                     <CardHeader
@@ -196,7 +196,12 @@ const Post = (props) => {
                 <Grid item xs={1}>
                     {!followed ? (
                         <AddIcon
-                            sx={{ paddingTop: "5px", cursor: "pointer" }}
+                            sx={{
+                                position: "relative",
+                                right: "100%",
+                                top: "50%",
+                                cursor: "pointer",
+                            }}
                             onClick={() => handleFollow()}
                         />
                     ) : (
