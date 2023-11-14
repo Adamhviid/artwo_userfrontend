@@ -28,7 +28,7 @@ const Nav = () => {
     const { state, logout } = useAuth();
 
     let settings = [];
-    if (state.isAuthenticated) {
+    if (state.isAuthenticated == true) {
         settings = [
             { label: "Mine posts", url: "profile/posts" },
             { label: "Profil", url: "/" + state.user.username },
