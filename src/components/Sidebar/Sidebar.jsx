@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./sidebar.css";
+import "./Sidebar.css";
 import { Link } from "react-router-dom";
 import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp";
 
