@@ -86,7 +86,9 @@ const FrontPage = () => {
     return (
         <Grid container spacing={2} sx={{ width: "70%", overflow: "" }}>
             <Grid item xs={12}>
-                <h1>Frontpage + rasmus</h1>
+                <h1 style={{ textAlign: "center", fontStyle: "italic" }}>
+                    Opslag
+                </h1>
                 {posts.map((post) => (
                     <Post
                         key={post.id}
