@@ -21,7 +21,6 @@ const grupper = [
 
 const Sidebar = () => {
     const [showSidebar, setShowSidebar] = useState(false);
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 1000);
     const sidebarRef = useRef(null);
 
     const toggleSidebar = () => {
@@ -39,48 +38,40 @@ const Sidebar = () => {
     };
 
     useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 1000);
-        };
-
-        window.addEventListener("resize", handleResize);
         document.addEventListener("mousedown", handleClickOutside);
 
         return () => {
-            window.removeEventListener("resize", handleResize);
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, []);
+    }, [showSidebar]);
 
     return (
         <div>
-            {isMobile && (
-                <div
-                    className="burger-menu"
-                    onClick={toggleSidebar}
+            <div
+                className="burger-menu"
+                onClick={toggleSidebar}
+                style={{
+                    position: "fixed",
+                    bottom: "20px",
+                    right: "20px",
+                    cursor: "pointer",
+                    zIndex: "999",
+                }}
+            >
+                <AddCircleOutlineSharpIcon
                     style={{
-                        position: "fixed",
-                        bottom: "20px",
-                        right: "20px",
+                        fontSize: 40,
+                        color: "rgb(97, 180, 76)",
                         cursor: "pointer",
-                        zIndex: "999",
                     }}
-                >
-                    <AddCircleOutlineSharpIcon
-                        style={{ fontSize: 40, color: "rgb(97, 180, 76)" }}
-                    />
-                </div>
-            )}
+                />
+            </div>
 
             <div
                 ref={sidebarRef}
                 className={`sidebar${showSidebar ? " active" : ""}`}
                 style={{
-                    display: isMobile
-                        ? showSidebar
-                            ? "block"
-                            : "none"
-                        : "block",
+                    display: showSidebar ? "block" : "none",
                     position: "fixed",
                     top: "65px",
                     bottom: "0",
