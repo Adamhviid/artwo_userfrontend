@@ -103,6 +103,7 @@ const FrontPage = () => {
                     <Post
                         key={post.id}
                         id={post.id}
+                        username={post.user.username}
                         userId={post.userId}
                         totalLikes={post.totalLikes}
                         userLiked={post.userLiked}

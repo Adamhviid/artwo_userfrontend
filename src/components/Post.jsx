@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { useAuth } from "../AuthContext";
+import { Link } from "react-router-dom";
 import {
     Card,
     CardHeader,
@@ -26,6 +27,7 @@ const Post = (props) => {
     const {
         id,
         userId,
+        username,
         userLiked,
         totalFollowers,
         userFollowed,
@@ -114,9 +116,10 @@ const Post = (props) => {
             <Comment
                 key={comment.id}
                 commentId={comment.id}
+                username={comment.user.username}
+                userId={comment.user.id}
                 postId={id}
                 isDeleted={comment.deletedAt}
-                userId={comment.userId}
                 date={new Date(comment.updatedAt).toISOString()}
                 comment={comment.content}
             />
@@ -139,17 +142,23 @@ const Post = (props) => {
                 }
             )
             .then((response) => {
-                setComment("");
                 if (response.status === 200) {
                     setCommentsState([
                         ...commentsState,
                         {
                             id: response.data.id,
                             userId: state.user.id,
+                            user: {
+                                username: state.user.username,
+                                id: state.user.id,
+                            },
+                            postId: id,
+                            isDeleted: null,
                             updatedAt: new Date(),
                             content: comment,
                         },
                     ]);
+                    setComment("");
                 } else {
                     alert("Noget gik galt");
                 }
@@ -180,19 +189,25 @@ const Post = (props) => {
         <Card sx={{ width: "100%", margin: "20px" }}>
             <Grid container spacing={2}>
                 <Grid item xs={11}>
-                    <CardHeader
-                        avatar={
-                            <Avatar aria-label="profilePicture">Bro</Avatar>
-                        }
-                        title={
-                            "Bruger id:" +
-                            userId +
-                            " (" +
-                            totalFollowersState +
-                            " følgere)"
-                        }
-                        subheader={formatDate(date)}
-                    />
+                    <Link
+                        to={`/u/${username}`}
+                        style={{ textDecoration: "none" }}
+                    >
+                        <CardHeader
+                            avatar={
+                                <Avatar aria-label="profilePicture">
+                                    {username.charAt(0)}
+                                </Avatar>
+                            }
+                            title={
+                                username +
+                                " (" +
+                                totalFollowersState +
+                                " følgere)"
+                            }
+                            subheader={formatDate(date)}
+                        />
+                    </Link>
                 </Grid>
                 <Grid item xs={1}>
                     {!followed ? (
@@ -249,6 +264,7 @@ const Post = (props) => {
                                 label="Ny kommentar"
                                 fullWidth
                                 multiline
+                                value={comment}
                                 variant="standard"
                                 onChange={(e) => setComment(e.target.value)}
                                 onKeyDown={(e) => {
@@ -282,6 +298,7 @@ const Post = (props) => {
 Post.propTypes = {
     id: PropTypes.number.isRequired,
     userId: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
     userLiked: PropTypes.bool.isRequired,
     totalFollowers: PropTypes.number.isRequired,
     userFollowed: PropTypes.bool.isRequired,

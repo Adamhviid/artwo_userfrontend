@@ -70,7 +70,8 @@ const CreatePostModal = (props) => {
         axios
             .get(`${import.meta.env.VITE_URL}/post/tags/all`)
             .then((response) => {
-                setPopularTags(response.data);
+                const tags = response.data.map((item) => item.tag);
+                setPopularTags(tags);
             })
             .catch((error) => {
                 console.log(error.response);

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { formatDistanceToNow, differenceInMinutes } from "date-fns";
 import { Avatar, Grid, Paper } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "../AuthContext";
 
 const Comment = (props) => {
-    const { isDeleted, postId, commentId, userId, date, comment } = props;
+    const { isDeleted, postId, commentId, userId, date, comment, username } =
+        props;
 
-    /* const [name, setName] = useState(); */
     const [userComment, setUserComment] = useState(false);
     const [isDeletedState, setIsDeletedState] = useState(false);
 
@@ -20,20 +21,7 @@ const Comment = (props) => {
             setIsDeletedState(true);
         }
         handleDeteIcon();
-
-        /* fetchUser(); */
     }, []);
-
-    /*  async function fetchUser() {
-        await axios
-            .get(`${
-                    import.meta.env.VITE_URL
-                }/user/get/` + userId)
-            .then((response) => {
-                console.log(response.data)
-                setName(response.data.username);
-            });
-    } */
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -93,8 +81,12 @@ const Comment = (props) => {
             }}
         >
             <Grid container direction="row" alignItems="center">
-                <Avatar alt="Remy Sharp" src={"asd"} />
-                <h4 style={{ paddingLeft: "5px" }}>{name}</h4>
+                <Avatar aria-label="profilePicture">
+                    {username.charAt(0)}
+                </Avatar>
+                <Link to={`/u/${username}`} style={{ textDecoration: "none" }}>
+                    <p style={{ padding: "10px" }}>{username}</p>
+                </Link>
                 {userComment ? (
                     <DeleteIcon
                         style={{
@@ -129,6 +121,7 @@ Comment.propTypes = {
     userId: PropTypes.number.isRequired,
     date: PropTypes.string.isRequired,
     comment: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
 };
 
 export default Comment;
