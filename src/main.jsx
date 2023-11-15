@@ -14,6 +14,7 @@ import Profile from "./pages/profile/Profile";
 import FrontPage from "./pages/frontpage/FrontPage";
 import Users from "./pages/users/Users";
 import Search from "./components/Search";
+import SinglePost from "./pages/SinglePost/SinglePost";
 
 import Rollespil from "./pages/underersider/Rollespil";
 import Biler from "./pages/underersider/Biler";
@@ -51,6 +52,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     <Route path="/u/:username" element={<Profile />} />
                     <Route path="/users" element={<Users />} />
                     <Route path="/search" element={<Search />} />
+                    <Route path="/post/:id" element={<SinglePost />} />
+
                     <Route path="/rollespil" element={<Rollespil />} />
                     <Route path="/biler" element={<Biler />} />
                     <Route path="/fest" element={<Fest />} />
