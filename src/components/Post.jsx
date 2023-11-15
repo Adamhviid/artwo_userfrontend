@@ -148,11 +148,18 @@ const Post = (props) => {
                             content: comment,
                         },
                     ]);
+                    setComment("");
                 } else {
                     alert("Noget gik galt");
                 }
             });
     }
+
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+            handleComment();
+        }
+    };
 
     async function handleFollow() {
         await axios
@@ -250,6 +257,8 @@ const Post = (props) => {
                                 multiline
                                 variant="standard"
                                 onChange={(e) => setComment(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                                value={comment}
                             />
                         </Grid>
                         <Grid item xs={1}>

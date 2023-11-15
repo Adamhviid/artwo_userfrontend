@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import { useAuth } from "../../AuthContext";
+import "./login.css";
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -63,7 +64,7 @@ const Login = () => {
                 }}
             >
                 <Typography component="h1" variant="h5">
-                    Lav en bruger her
+                    Log ind med din bruger her
                 </Typography>
                 <Box component="form" onSubmit={handleLogin} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
