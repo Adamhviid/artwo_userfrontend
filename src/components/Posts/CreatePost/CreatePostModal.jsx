@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 
 import Tags from "./Tags";
-import { useAuth } from "../../AuthContext";
+import { useAuth } from "../../../AuthContext";
 
 const CreatePostModal = (props) => {
     const { fetchPosts } = props;
@@ -83,7 +83,6 @@ const CreatePostModal = (props) => {
             <Card sx={{ width: "100%", margin: "20px" }}>
                 <Grid container spacing={2}>
                     <Grid item xs={11}>
-                        x
                         <CardHeader
                             avatar={
                                 <Avatar aria-label="profilePicture">Bro</Avatar>

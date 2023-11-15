@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { formatDistanceToNow, differenceInMinutes } from "date-fns";
 import { Avatar, Grid, Paper } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../../AuthContext";
 
 const Comment = (props) => {
     const { isDeleted, postId, commentId, userId, date, comment, username } =

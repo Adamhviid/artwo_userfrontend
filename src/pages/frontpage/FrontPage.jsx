@@ -3,8 +3,8 @@ import axios from "axios";
 import { Pagination, Grid, Typography } from "@mui/material";
 
 import { useAuth } from "../../AuthContext";
-import Post from "../../components/Post";
-import CreatePost from "../../components/CreatePost/CreatePostModal";
+import Post from "../../components/Posts/Post";
+import CreatePost from "../../components/Posts/CreatePost/CreatePostModal";
 import selfie from "../../images/DuckFace.jpeg";
 
 const FrontPage = () => {
