@@ -7,7 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "../AuthContext";
 
 const Comment = (props) => {
-    const { isDeleted, postId, userId, date, comment } = props;
+    const { isDeleted, postId, commentId, userId, date, comment } = props;
 
     /* const [name, setName] = useState(); */
     const [userComment, setUserComment] = useState(false);
@@ -68,8 +68,7 @@ const Comment = (props) => {
             .post(
                 `${import.meta.env.VITE_URL}/post/uncomment/` + postId,
                 {
-                    userId: state.user.id,
-                    postId: postId,
+                    commentId: commentId,
                 },
                 {
                     headers: {
@@ -126,6 +125,7 @@ const Comment = (props) => {
 Comment.propTypes = {
     isDeleted: PropTypes.string,
     postId: PropTypes.number.isRequired,
+    commentId: PropTypes.number.isRequired,
     userId: PropTypes.number.isRequired,
     date: PropTypes.string.isRequired,
     comment: PropTypes.string.isRequired,

@@ -113,6 +113,7 @@ const Post = (props) => {
         return commentsState.map((comment) => (
             <Comment
                 key={comment.id}
+                commentId={comment.id}
                 postId={id}
                 isDeleted={comment.deletedAt}
                 userId={comment.userId}
@@ -138,6 +139,7 @@ const Post = (props) => {
                 }
             )
             .then((response) => {
+                setComment("");
                 if (response.status === 200) {
                     setCommentsState([
                         ...commentsState,
@@ -249,6 +251,12 @@ const Post = (props) => {
                                 multiline
                                 variant="standard"
                                 onChange={(e) => setComment(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" && !e.shiftKey) {
+                                        e.preventDefault();
+                                        handleComment();
+                                    }
+                                }}
                             />
                         </Grid>
                         <Grid item xs={1}>
