@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Pagination, Grid } from "@mui/material";
+import { Pagination, Grid, Typography } from "@mui/material";
 
 import { useAuth } from "../../AuthContext";
 import Post from "../../components/Post";
+import CreatePost from "../../components/CreatePost/CreatePostModal";
 import selfie from "../../images/DuckFace.jpeg";
 
 const FrontPage = () => {
@@ -84,11 +85,20 @@ const FrontPage = () => {
     }
 
     return (
-        <Grid container spacing={2} sx={{ width: "70%", overflow: "" }}>
+        <Grid container spacing={2} sx={{ width: "85%" }}>
+            {state.isAuthenticated ? (
+                <Grid item xs={12}>
+                    <CreatePost fetchPosts={fetchPosts} />
+                </Grid>
+            ) : null}
             <Grid item xs={12}>
-                <h1 style={{ textAlign: "center", fontStyle: "italic" }}>
+                <Typography
+                    variant="h4"
+                    align="center"
+                    sx={{ fontStyle: "italic" }}
+                >
                     Opslag
-                </h1>
+                </Typography>
                 {posts.map((post) => (
                     <Post
                         key={post.id}
@@ -103,7 +113,7 @@ const FrontPage = () => {
                         description={post.content}
                         image={selfie}
                         comments={post.comments}
-                        sx={{ maxWidth: "100%", overflow: "hidden" }} // Adjust styles for Post component
+                        sx={{ maxWidth: "100%", overflow: "hidden" }}
                     />
                 ))}
             </Grid>

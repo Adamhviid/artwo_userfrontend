@@ -169,7 +169,6 @@ const Post = (props) => {
                 }
             )
             .then(() => {
-                console.log("followed");
                 setFollowed(true);
                 setTotalFollowersState(totalFollowersState + 1);
             });

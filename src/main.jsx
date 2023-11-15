@@ -12,7 +12,6 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Profile from "./pages/profile/Profile";
 import FrontPage from "./pages/frontpage/FrontPage";
-import CreatePost from "./pages/createpost/CreatePost";
 import Users from "./pages/users/Users";
 import Search from "./components/Search";
 
@@ -50,7 +49,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/u/:username" element={<Profile />} />
-                    <Route path="/opslag" element={<CreatePost />} />
                     <Route path="/users" element={<Users />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/rollespil" element={<Rollespil />} />
