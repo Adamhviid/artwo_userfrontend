@@ -21,10 +21,11 @@ const SinglePost = () => {
         axios
             .get(`${import.meta.env.VITE_URL}/post/get/${id}`)
             .then((response) => {
-                const likes = response.data.post.likes;
-                const tmpComments = response.data.post.comments;
-                const followers = response.data.followers;
                 const tmpPost = response.data.post;
+                const tags = response.data.post.tags;
+                const likes = response.data.post.likes;
+                const comments = response.data.post.comments;
+                const followers = response.data.followers;
 
                 let totalLikes = 0;
                 tmpPost.userLiked = false;
@@ -33,6 +34,7 @@ const SinglePost = () => {
                 tmpPost.userFollowed = false;
 
                 tmpPost.comments = [];
+                tmpPost.tags = [];
 
                 likes.forEach((like) => {
                     if (like.postId === tmpPost.id) {
@@ -62,11 +64,16 @@ const SinglePost = () => {
                 tmpPost.totalLikes = totalLikes++;
                 tmpPost.totalFollowers = totalFollowers++;
 
-                tmpComments.forEach((comment) => {
+                comments.forEach((comment) => {
                     if (comment.postId === tmpPost.id) {
                         tmpPost.comments.push(comment);
                     }
                 });
+
+                tags.forEach((tag) => {
+                    tmpPost.tags.push(tag.tag);
+                });
+
                 setPost(tmpPost);
                 setLoading(false);
             });
@@ -91,6 +98,7 @@ const SinglePost = () => {
                 userFollowed={post.userFollowed}
                 date={post.updatedAt}
                 comments={post.comments}
+                tags={post.tags}
                 sx={{ maxWidth: "100%", overflow: "hidden" }}
             />
         </Grid>
