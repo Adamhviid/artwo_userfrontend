@@ -52,7 +52,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     <Route path="/u/:username" element={<Profile />} />
                     <Route path="/users" element={<Users />} />
                     <Route path="/search" element={<Search />} />
-                    <Route path="/post/:id" element={<SinglePost />} />
+                    <Route path="/p/:id" element={<SinglePost />} />
 
                     <Route path="/rollespil" element={<Rollespil />} />
                     <Route path="/biler" element={<Biler />} />

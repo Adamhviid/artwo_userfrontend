@@ -82,11 +82,11 @@ const Search = () => {
                             break;
 
                         case "Posts":
-                            link = `/posts/${option.id}`;
+                            link = `/p/${option.id}`;
                             break;
 
                         case "Kommentarer":
-                            link = `/comments/${option.id}`;
+                            link = `/p/${option.id}`;
                             break;
                     }
 

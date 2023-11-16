@@ -305,9 +305,9 @@ Post.propTypes = {
     totalLikes: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    comments: PropTypes.array.isRequired,
+    description: PropTypes.string,
+    image: PropTypes.string,
+    comments: PropTypes.array,
 };
 
 export default Post;
