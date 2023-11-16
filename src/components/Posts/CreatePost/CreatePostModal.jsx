@@ -50,12 +50,20 @@ const CreatePostModal = (props) => {
         event.preventDefault();
         if (title != "") {
             axios
-                .post(`${import.meta.env.VITE_URL}/post/create`, {
-                    title: title,
-                    content: description,
-                    tags: tags,
-                    userId: state.user.id,
-                })
+                .post(
+                    `${import.meta.env.VITE_URL}/post/create`,
+                    {
+                        title: title,
+                        content: description,
+                        tags: tags,
+                        userId: state.user.id,
+                    },
+                    {
+                        headers: {
+                            token: localStorage.getItem("token"),
+                        },
+                    }
+                )
                 .then(() => {
                     fetchPosts();
                     handleClose();
