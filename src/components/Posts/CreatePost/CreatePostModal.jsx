@@ -118,13 +118,19 @@ const CreatePostModal = (props) => {
                 <Card
                     sx={{
                         position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
+                        top: "15%",
+                        bottom: "15%",
+                        left: 0,
+                        right: 0,
+                        margin: "auto",
                         width: 500,
                         height: "auto",
                         boxShadow: 24,
                         p: 4,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
                     }}
                 >
                     <Grid container spacing={2}>
