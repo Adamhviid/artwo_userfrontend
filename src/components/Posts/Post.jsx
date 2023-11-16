@@ -14,6 +14,7 @@ import {
     Typography,
     TextField,
     Grid,
+    Chip,
 } from "@mui/material";
 
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
@@ -36,6 +37,7 @@ const Post = (props) => {
         date,
         description,
         image,
+        tags,
         comments,
     } = props;
 
@@ -235,6 +237,9 @@ const Post = (props) => {
                 sx={{ objectFit: "contain" }}
             />
             <CardContent>
+                {tags.map((tag, index) => (
+                    <Chip key={index} label={tag} sx={{ margin: "5px" }} />
+                ))}
                 <Typography variant="body2" color="text.secondary">
                     {description}
                 </Typography>
@@ -307,6 +312,7 @@ Post.propTypes = {
     date: PropTypes.string.isRequired,
     description: PropTypes.string,
     image: PropTypes.string,
+    tags: PropTypes.array,
     comments: PropTypes.array,
 };
 

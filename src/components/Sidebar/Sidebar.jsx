@@ -1,28 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import "./sidebar.css";
 import { Link } from "react-router-dom";
 import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp";
-
-const grupper = [
-    "Rollespil",
-    "Fest",
-    "Problemer",
-    "Biler",
-    "Make-up",
-    "Underholdning",
-    "Politik",
-    "Hardware",
-    "Kæledyr",
-    "Kendte",
-    "Kærlighed",
-    "Mobiltelefoni",
-    "Fodbold",
-];
 
 const Sidebar = () => {
     const [showSidebar, setShowSidebar] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 1000);
     const sidebarRef = useRef(null);
+
+    const [tags, setTags] = useState([]);
 
     const toggleSidebar = () => {
         setShowSidebar(!showSidebar);
@@ -39,6 +26,7 @@ const Sidebar = () => {
     };
 
     useEffect(() => {
+        getTags();
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 1000);
         };
@@ -51,6 +39,13 @@ const Sidebar = () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+
+    async function getTags() {
+        const response = await axios.get(
+            `${import.meta.env.VITE_URL}/post/tags/all`
+        );
+        setTags(response.data);
+    }
 
     return (
         <div>
@@ -95,11 +90,11 @@ const Sidebar = () => {
             >
                 <h2>Fællesskaber</h2>
                 <ul>
-                    {grupper.map((gruppe, index) => (
+                    {tags.map((tag, index) => (
                         <li key={index}>
-                            <Link to={`/${gruppe.toLowerCase()}`}>
-                                {gruppe}
-                            </Link>
+                            {/* <Link to={`/${gruppe.toLowerCase()}`}> */}
+                            {tag.tag} ({tag.count} opslag)
+                            {/*  </Link> */}
                         </li>
                     ))}
                 </ul>

@@ -53,20 +53,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     <Route path="/users" element={<Users />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/p/:id" element={<SinglePost />} />
-
-                    <Route path="/rollespil" element={<Rollespil />} />
-                    <Route path="/biler" element={<Biler />} />
-                    <Route path="/fest" element={<Fest />} />
-                    <Route path="/fodbold" element={<Fodbold />} />
-                    <Route path="/hardware" element={<Hardware />} />
-                    <Route path="/kæledyr" element={<Kæledyr />} />
-                    <Route path="/kendte" element={<Kendte />} />
-                    <Route path="/makeup" element={<Makeup />} />
-                    <Route path="/mobiltelefoni" element={<Mobiltelefoni />} />
-                    <Route path="/politik" element={<Politik />} />
-                    <Route path="/underholdning" element={<Underholdning />} />
-                    <Route path="/problemer" element={<Problemer />} />
-                    <Route path="/kærlighed" element={<Kærlighed />} />
                 </Routes>
                 <Sidebar />
             </Container>

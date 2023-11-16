@@ -47,7 +47,8 @@ const Tags = (props) => {
                                     {params.InputProps.endAdornment}
                                     <IconButton
                                         onClick={() => {
-                                            const value = params.inputProps.value;
+                                            const value =
+                                                params.inputProps.value.toLowerCase();
                                             
                                             if (value !== "" && !tags.includes(value)) {
                                                 setTags((prevTags) => [
@@ -66,7 +67,8 @@ const Tags = (props) => {
                         onKeyDown={(event) => {
                             if (event.key === "Enter") {
                                 event.preventDefault();
-                                const value = params.inputProps.value;
+                                const value =
+                                    params.inputProps.value.toLowerCase();
                                 if (value !== "" && !tags.includes(value)) {
                                     setTags((prevTags) => [...prevTags, value]);
                                     params.inputProps.value = "";

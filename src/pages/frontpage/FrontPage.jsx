@@ -26,16 +26,19 @@ const FrontPage = () => {
                     import.meta.env.VITE_URL
                 }/post/all?page=${currentPage}&pageSize=${pageSize}`
             );
-            const totalCount = response.data.postPages;
-            const likes = response.data.likes;
-            const followers = response.data.followers;
-            const tmpComments = response.data.comments;
             const tmpPosts = response.data.posts;
+            const totalCount = response.data.postPages;
+
+            const followers = response.data.followers;
 
             const calculatedTotalPages = Math.ceil(totalCount / pageSize);
             setTotalPages(calculatedTotalPages);
 
             tmpPosts.forEach((post) => {
+                const likes = post.likes;
+                const comments = post.comments;
+                const tags = post.tags;
+
                 let totalLikes = 0;
                 post.userLiked = false;
 
@@ -43,19 +46,17 @@ const FrontPage = () => {
                 post.userFollowed = false;
 
                 post.comments = [];
+                post.tags = [];
 
                 likes.forEach((like) => {
-                    if (like.postId === post.id) {
-                        totalLikes++;
+                    totalLikes++;
 
-                        if (
-                            state.isAuthenticated &&
-                            like.userId == state.user.id
-                        ) {
-                            post.userLiked = true;
-                        }
+                    if (state.isAuthenticated && like.userId == state.user.id) {
+                        post.userLiked = true;
                     }
                 });
+                post.totalLikes = totalLikes++;
+
                 followers.forEach((follower) => {
                     if (follower.followId == post.userId) {
                         totalFollowers++;
@@ -68,16 +69,17 @@ const FrontPage = () => {
                         }
                     }
                 });
-
-                post.totalLikes = totalLikes++;
                 post.totalFollowers = totalFollowers++;
 
-                tmpComments.forEach((comment) => {
-                    if (comment.postId === post.id) {
-                        post.comments.push(comment);
-                    }
+                comments.forEach((comment) => {
+                    post.comments.push(comment);
+                });
+
+                tags.forEach((tag) => {
+                    post.tags.push(tag.tag);
                 });
             });
+
             setPosts(tmpPosts);
         } catch (error) {
             console.error("Error fetching posts:", error);
@@ -114,6 +116,7 @@ const FrontPage = () => {
                         description={post.content}
                         image={selfie}
                         comments={post.comments}
+                        tags={post.tags}
                         sx={{ maxWidth: "100%", overflow: "hidden" }}
                     />
                 ))}
