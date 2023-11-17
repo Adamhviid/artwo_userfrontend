@@ -8,10 +8,8 @@ const Profile = () => {
     const [user, setUser] = useState({});
     const { username } = useParams();
 
-    /*  const navigate = useNavigate(); */
-
     useEffect(() => {
-        if (state.isAuthenticated) {
+        if (state.isAuthenticated === false) {
             fetchUser();
         } else {
             setUser(state.user);

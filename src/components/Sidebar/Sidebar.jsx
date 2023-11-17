@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-<<<<<<< HEAD
-import "./Sidebar.css";
-=======
 import axios from "axios";
 import "./sidebar.css";
->>>>>>> staging
 import { Link } from "react-router-dom";
 import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp";
 

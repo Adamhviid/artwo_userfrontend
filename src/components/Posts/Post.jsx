@@ -284,17 +284,12 @@ const Post = (props) => {
                                 value={comment}
                                 variant="standard"
                                 onChange={(e) => setComment(e.target.value)}
-<<<<<<< HEAD:src/components/Post.jsx
-                                onKeyPress={handleKeyPress}
-                                value={comment}
-=======
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter" && !e.shiftKey) {
                                         e.preventDefault();
                                         handleComment();
                                     }
                                 }}
->>>>>>> staging:src/components/Posts/Post.jsx
                             />
                         </Grid>
                         <Grid item xs={1}>
