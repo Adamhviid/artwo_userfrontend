@@ -42,7 +42,7 @@ const Sidebar = () => {
 
     async function getTags() {
         const response = await axios.get(
-            `${import.meta.env.VITE_URL}/post/tags/all`
+            `${import.meta.env.VITE_URL}/post/all/tags`
         );
         setTags(response.data);
     }

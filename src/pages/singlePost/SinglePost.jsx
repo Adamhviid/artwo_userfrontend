@@ -5,6 +5,7 @@ import { useAuth } from "../../AuthContext";
 
 import { Grid } from "@mui/material";
 
+import processPost from "../../components/Posts/ProcessPost";
 import Post from "../../components/Posts/Post";
 
 const SinglePost = () => {
@@ -17,66 +18,21 @@ const SinglePost = () => {
         fetchPost();
     }, [loading, id]);
 
-    function fetchPost() {
-        axios
-            .get(`${import.meta.env.VITE_URL}/post/get/${id}`)
-            .then((response) => {
-                const tmpPost = response.data.post;
-                const tags = response.data.post.tags;
-                const likes = response.data.post.likes;
-                const comments = response.data.post.comments;
-                const followers = response.data.followers;
+    async function fetchPost() {
+        try {
+            await axios
+                .get(`${import.meta.env.VITE_URL}/post/get/id/${id}`)
+                .then((response) => {
+                    const post = response.data.post;
+                    const followers = response.data.followers;
 
-                let totalLikes = 0;
-                tmpPost.userLiked = false;
-
-                let totalFollowers = 0;
-                tmpPost.userFollowed = false;
-
-                tmpPost.comments = [];
-                tmpPost.tags = [];
-
-                likes.forEach((like) => {
-                    if (like.postId === tmpPost.id) {
-                        totalLikes++;
-
-                        if (
-                            state.isAuthenticated &&
-                            like.userId == state.user.id
-                        ) {
-                            tmpPost.userLiked = true;
-                        }
-                    }
+                    const tmpPost = processPost(post, state, followers);
+                    setPost(tmpPost);
+                    setLoading(false);
                 });
-                followers.forEach((follower) => {
-                    if (follower.followId == tmpPost.userId) {
-                        totalFollowers++;
-
-                        if (
-                            state.isAuthenticated &&
-                            follower.userId == state.user.id
-                        ) {
-                            tmpPost.userFollowed = true;
-                        }
-                    }
-                });
-
-                tmpPost.totalLikes = totalLikes++;
-                tmpPost.totalFollowers = totalFollowers++;
-
-                comments.forEach((comment) => {
-                    if (comment.postId === tmpPost.id) {
-                        tmpPost.comments.push(comment);
-                    }
-                });
-
-                tags.forEach((tag) => {
-                    tmpPost.tags.push(tag.tag);
-                });
-
-                setPost(tmpPost);
-                setLoading(false);
-            });
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+        }
     }
 
     if (loading) {

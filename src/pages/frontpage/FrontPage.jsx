@@ -4,11 +4,13 @@ import { Pagination, Grid, Typography } from "@mui/material";
 
 import { useAuth } from "../../AuthContext";
 import Post from "../../components/Posts/Post";
+import processPost from "../../components/Posts/ProcessPost";
 import CreatePost from "../../components/Posts/CreatePost/CreatePostModal";
 import selfie from "../../images/DuckFace.jpeg";
 
 const FrontPage = () => {
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const pageSize = 2;
@@ -17,73 +19,36 @@ const FrontPage = () => {
 
     useEffect(() => {
         fetchPosts();
-    }, [currentPage]);
+    }, [currentPage, loading]);
 
     async function fetchPosts() {
         try {
-            const response = await axios.get(
-                `${
-                    import.meta.env.VITE_URL
-                }/post/all?page=${currentPage}&pageSize=${pageSize}`
-            );
-            const tmpPosts = response.data.posts;
-            const totalCount = response.data.postPages;
+            await axios
+                .get(
+                    `${
+                        import.meta.env.VITE_URL
+                    }/post/all?page=${currentPage}&pageSize=${pageSize}`
+                )
+                .then((response) => {
+                    const tmpPosts = response.data.posts;
+                    const followers = response.data.followers;
 
-            const followers = response.data.followers;
-
-            const calculatedTotalPages = Math.ceil(totalCount / pageSize);
-            setTotalPages(calculatedTotalPages);
-
-            tmpPosts.forEach((post) => {
-                const likes = post.likes;
-                const comments = post.comments;
-                const tags = post.tags;
-
-                let totalLikes = 0;
-                post.userLiked = false;
-
-                let totalFollowers = 0;
-                post.userFollowed = false;
-
-                post.comments = [];
-                post.tags = [];
-
-                likes.forEach((like) => {
-                    totalLikes++;
-
-                    if (state.isAuthenticated && like.userId == state.user.id) {
-                        post.userLiked = true;
-                    }
+                    const processedPosts = tmpPosts.map((post) =>
+                        processPost(post, state, followers)
+                    );
+                    setPosts(processedPosts);
+                    setLoading(false);
+                    setTotalPages(
+                        Math.ceil(response.data.postPages / pageSize)
+                    );
                 });
-                post.totalLikes = totalLikes++;
-
-                followers.forEach((follower) => {
-                    if (follower.followId == post.userId) {
-                        totalFollowers++;
-
-                        if (
-                            state.isAuthenticated &&
-                            follower.userId == state.user.id
-                        ) {
-                            post.userFollowed = true;
-                        }
-                    }
-                });
-                post.totalFollowers = totalFollowers++;
-
-                comments.forEach((comment) => {
-                    post.comments.push(comment);
-                });
-
-                tags.forEach((tag) => {
-                    post.tags.push(tag.tag);
-                });
-            });
-
-            setPosts(tmpPosts);
         } catch (error) {
             console.error("Error fetching posts:", error);
         }
+    }
+
+    if (loading) {
+        return <div>Loading...</div>;
     }
 
     return (
