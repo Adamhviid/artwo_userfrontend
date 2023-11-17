@@ -230,19 +230,25 @@ const Post = (props) => {
             <CardContent>
                 <Typography>{title}</Typography>
             </CardContent>
-            <CardMedia
-                component="img"
-                height="350"
-                image={""}
-                sx={{ objectFit: "contain" }}
-            />
+            {image == undefined ? null : (
+                <CardContent>
+                    <CardMedia
+                        component="img"
+                        height="350"
+                        image={image}
+                        sx={{ objectFit: "contain" }}
+                    />
+                </CardContent>
+            )}
             <CardContent>
                 {tags.map((tag, index) => (
                     <Chip key={index} label={tag} sx={{ margin: "5px" }} />
                 ))}
-                <Typography variant="body2" color="text.secondary">
-                    {description}
-                </Typography>
+                {description == "" ? null : (
+                    <Typography variant="body2" color="text.secondary">
+                        {description}
+                    </Typography>
+                )}
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton

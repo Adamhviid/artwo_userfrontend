@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 import {
     Card,
     Grid,
@@ -19,9 +20,9 @@ import { useAuth } from "../../../AuthContext";
 
 const CreatePostModal = (props) => {
     const { fetchPosts } = props;
-    const [title, setTitle] = useState();
-    const [image, setImage] = useState();
-    const [description, setDescription] = useState();
+    const [title, setTitle] = useState("");
+    const [image, setImage] = useState("");
+    const [description, setDescription] = useState("");
     const [tags, setTags] = useState([]);
     const [popularTags, setPopularTags] = useState([]);
 
@@ -46,24 +47,35 @@ const CreatePostModal = (props) => {
         fileInputRef.current.click();
     };
 
-    function handleSubmit(event) {
+    async function urlToFile(url, filename, mimeType) {
+        const res = await fetch(url);
+        const buf = await res.arrayBuffer();
+        return new File([buf], filename, { type: mimeType });
+    }
+
+    async function handleSubmit(event) {
         event.preventDefault();
+        const formData = new FormData();
+
+        if (image != "") {
+            const filename = `${state.user.id}-${uuidv4()}.png`;
+            const imageFile = await urlToFile(image, filename, "image/png");
+            formData.append("image", imageFile);
+        }
+
+        formData.append("title", title);
+        formData.append("content", description);
+        formData.append("tags", JSON.stringify(tags));
+        formData.append("userId", state.user.id);
+
         if (title != "") {
             axios
-                .post(
-                    `${import.meta.env.VITE_URL}/post/create`,
-                    {
-                        title: title,
-                        content: description,
-                        tags: tags,
-                        userId: state.user.id,
+                .post(`${import.meta.env.VITE_URL}/post/create`, formData, {
+                    headers: {
+                        token: localStorage.getItem("token"),
+                        "Content-Type": "multipart/form-data",
                     },
-                    {
-                        headers: {
-                            token: localStorage.getItem("token"),
-                        },
-                    }
-                )
+                })
                 .then(() => {
                     fetchPosts();
                     handleClose();
@@ -124,7 +136,7 @@ const CreatePostModal = (props) => {
                         right: 0,
                         margin: "auto",
                         width: 500,
-                        height: "auto",
+                        height: 650,
                         boxShadow: 24,
                         p: 4,
                         display: "flex",

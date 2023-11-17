@@ -13,7 +13,7 @@ const FrontPage = () => {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const pageSize = 2;
+    const pageSize = 10;
 
     const { state } = useAuth();
 
@@ -30,6 +30,7 @@ const FrontPage = () => {
                     }/post/all?page=${currentPage}&pageSize=${pageSize}`
                 )
                 .then((response) => {
+                    console.log(response.data);
                     const tmpPosts = response.data.posts;
                     const followers = response.data.followers;
 
@@ -79,7 +80,7 @@ const FrontPage = () => {
                         title={post.title}
                         date={post.updatedAt}
                         description={post.content}
-                        image={selfie}
+                        image={post.image}
                         comments={post.comments}
                         tags={post.tags}
                         sx={{ maxWidth: "100%", overflow: "hidden" }}
