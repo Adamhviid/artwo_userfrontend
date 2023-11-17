@@ -6,7 +6,6 @@ import { useAuth } from "../../AuthContext";
 import Post from "../../components/Posts/Post";
 import processPost from "../../components/Posts/ProcessPost";
 import CreatePost from "../../components/Posts/CreatePost/CreatePostModal";
-import selfie from "../../images/DuckFace.jpeg";
 
 const FrontPage = () => {
     const [posts, setPosts] = useState([]);
@@ -52,6 +51,11 @@ const FrontPage = () => {
         return <div>Loading...</div>;
     }
 
+    function handlePageChange(event, page) {
+        setCurrentPage(page);
+        window.scrollTo(0, 0);
+    }
+
     return (
         <Grid container spacing={2} sx={{ width: "85%" }}>
             {state.isAuthenticated ? (
@@ -93,7 +97,7 @@ const FrontPage = () => {
                         count={totalPages}
                         shape="rounded"
                         page={currentPage}
-                        onChange={(event, page) => setCurrentPage(page)}
+                        onChange={handlePageChange}
                     />
                 </Grid>
             </Grid>
