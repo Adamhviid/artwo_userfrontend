@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 
 const Profile = () => {
@@ -11,7 +11,7 @@ const Profile = () => {
     /*  const navigate = useNavigate(); */
 
     useEffect(() => {
-        if (state.isAuthenticated != true) {
+        if (state.isAuthenticated) {
             fetchUser();
         } else {
             setUser(state.user);

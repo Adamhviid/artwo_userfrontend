@@ -45,9 +45,17 @@ const Search = () => {
         await axios
             .get(`${import.meta.env.VITE_URL}/search/all/${query}`)
             .then((response) => {
-                setUsers(response.data.users);
-                setPosts(response.data.posts);
-                setComments(response.data.comments);
+                const { users, posts, comments } = response.data;
+
+                const hasDeletedAt = [users, posts, comments].some((data) =>
+                    data.some((item) => item.deletedAt)
+                );
+
+                if (!hasDeletedAt) {
+                    setUsers(users);
+                    setPosts(posts);
+                    setComments(comments);
+                }
             });
     }
 
@@ -74,11 +82,11 @@ const Search = () => {
                             break;
 
                         case "Posts":
-                            link = `/posts/${option.id}`;
+                            link = `/p/${option.id}`;
                             break;
 
                         case "Kommentarer":
-                            link = `/comments/${option.id}`;
+                            link = `/p/${option.id}`;
                             break;
                     }
 

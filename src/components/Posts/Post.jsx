@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../../AuthContext";
+import { Link } from "react-router-dom";
 import {
     Card,
     CardHeader,
@@ -13,6 +14,7 @@ import {
     Typography,
     TextField,
     Grid,
+    Chip,
 } from "@mui/material";
 
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
@@ -26,6 +28,7 @@ const Post = (props) => {
     const {
         id,
         userId,
+        username,
         userLiked,
         totalFollowers,
         userFollowed,
@@ -34,6 +37,7 @@ const Post = (props) => {
         date,
         description,
         image,
+        tags,
         comments,
     } = props;
 
@@ -113,9 +117,11 @@ const Post = (props) => {
         return commentsState.map((comment) => (
             <Comment
                 key={comment.id}
+                commentId={comment.id}
+                username={comment.user.username}
+                userId={comment.user.id}
                 postId={id}
                 isDeleted={comment.deletedAt}
-                userId={comment.userId}
                 date={new Date(comment.updatedAt).toISOString()}
                 comment={comment.content}
             />
@@ -144,6 +150,12 @@ const Post = (props) => {
                         {
                             id: response.data.id,
                             userId: state.user.id,
+                            user: {
+                                username: state.user.username,
+                                id: state.user.id,
+                            },
+                            postId: id,
+                            isDeleted: null,
                             updatedAt: new Date(),
                             content: comment,
                         },
@@ -176,7 +188,6 @@ const Post = (props) => {
                 }
             )
             .then(() => {
-                console.log("followed");
                 setFollowed(true);
                 setTotalFollowersState(totalFollowersState + 1);
             });
@@ -186,19 +197,25 @@ const Post = (props) => {
         <Card sx={{ width: "100%", margin: "20px" }}>
             <Grid container spacing={2}>
                 <Grid item xs={11}>
-                    <CardHeader
-                        avatar={
-                            <Avatar aria-label="profilePicture">Bro</Avatar>
-                        }
-                        title={
-                            "Bruger id:" +
-                            userId +
-                            " (" +
-                            totalFollowersState +
-                            " følgere)"
-                        }
-                        subheader={formatDate(date)}
-                    />
+                    <Link
+                        to={`/u/${username}`}
+                        style={{ textDecoration: "none" }}
+                    >
+                        <CardHeader
+                            avatar={
+                                <Avatar aria-label="profilePicture">
+                                    {username.charAt(0)}
+                                </Avatar>
+                            }
+                            title={
+                                username +
+                                " (" +
+                                totalFollowersState +
+                                " følgere)"
+                            }
+                            subheader={formatDate(date)}
+                        />
+                    </Link>
                 </Grid>
                 <Grid item xs={1}>
                     {!followed ? (
@@ -219,16 +236,25 @@ const Post = (props) => {
             <CardContent>
                 <Typography>{title}</Typography>
             </CardContent>
-            <CardMedia
-                component="img"
-                height="350"
-                image={""}
-                sx={{ objectFit: "contain" }}
-            />
+            {image == undefined ? null : (
+                <CardContent>
+                    <CardMedia
+                        component="img"
+                        height="350"
+                        image={image}
+                        sx={{ objectFit: "contain" }}
+                    />
+                </CardContent>
+            )}
             <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                    {description}
-                </Typography>
+                {tags.map((tag, index) => (
+                    <Chip key={index} label={tag} sx={{ margin: "5px" }} />
+                ))}
+                {description == "" ? null : (
+                    <Typography variant="body2" color="text.secondary">
+                        {description}
+                    </Typography>
+                )}
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton
@@ -255,10 +281,20 @@ const Post = (props) => {
                                 label="Ny kommentar"
                                 fullWidth
                                 multiline
+                                value={comment}
                                 variant="standard"
                                 onChange={(e) => setComment(e.target.value)}
+<<<<<<< HEAD:src/components/Post.jsx
                                 onKeyPress={handleKeyPress}
                                 value={comment}
+=======
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" && !e.shiftKey) {
+                                        e.preventDefault();
+                                        handleComment();
+                                    }
+                                }}
+>>>>>>> staging:src/components/Posts/Post.jsx
                             />
                         </Grid>
                         <Grid item xs={1}>
@@ -284,15 +320,17 @@ const Post = (props) => {
 Post.propTypes = {
     id: PropTypes.number.isRequired,
     userId: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
     userLiked: PropTypes.bool.isRequired,
     totalFollowers: PropTypes.number.isRequired,
     userFollowed: PropTypes.bool.isRequired,
     totalLikes: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    comments: PropTypes.array.isRequired,
+    description: PropTypes.string,
+    image: PropTypes.string,
+    tags: PropTypes.array,
+    comments: PropTypes.array,
 };
 
 export default Post;

@@ -12,9 +12,9 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Profile from "./pages/profile/Profile";
 import FrontPage from "./pages/frontpage/FrontPage";
-import CreatePost from "./pages/createpost/CreatePost";
 import Users from "./pages/users/Users";
 import Search from "./components/Search";
+import SinglePost from "./pages/SinglePost/SinglePost";
 
 import Rollespil from "./pages/underersider/Rollespil";
 import Biler from "./pages/underersider/Biler";
@@ -50,22 +50,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/u/:username" element={<Profile />} />
-                    <Route path="/opslag" element={<CreatePost />} />
                     <Route path="/users" element={<Users />} />
                     <Route path="/search" element={<Search />} />
-                    <Route path="/rollespil" element={<Rollespil />} />
-                    <Route path="/biler" element={<Biler />} />
-                    <Route path="/fest" element={<Fest />} />
-                    <Route path="/fodbold" element={<Fodbold />} />
-                    <Route path="/hardware" element={<Hardware />} />
-                    <Route path="/kæledyr" element={<Kæledyr />} />
-                    <Route path="/kendte" element={<Kendte />} />
-                    <Route path="/makeup" element={<Makeup />} />
-                    <Route path="/mobiltelefoni" element={<Mobiltelefoni />} />
-                    <Route path="/politik" element={<Politik />} />
-                    <Route path="/underholdning" element={<Underholdning />} />
-                    <Route path="/problemer" element={<Problemer />} />
-                    <Route path="/kærlighed" element={<Kærlighed />} />
+                    <Route path="/p/:id" element={<SinglePost />} />
                 </Routes>
                 <Sidebar />
             </Container>

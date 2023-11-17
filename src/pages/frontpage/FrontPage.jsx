@@ -1,98 +1,81 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Pagination, Grid } from "@mui/material";
+import { Pagination, Grid, Typography } from "@mui/material";
 
 import { useAuth } from "../../AuthContext";
-import Post from "../../components/Post";
-import selfie from "../../images/DuckFace.jpeg";
+import Post from "../../components/Posts/Post";
+import processPost from "../../components/Posts/ProcessPost";
+import CreatePost from "../../components/Posts/CreatePost/CreatePostModal";
 
 const FrontPage = () => {
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const pageSize = 2;
+    const pageSize = 10;
 
     const { state } = useAuth();
 
     useEffect(() => {
         fetchPosts();
-    }, [currentPage]);
+    }, [currentPage, loading]);
 
     async function fetchPosts() {
         try {
-            const response = await axios.get(
-                `${
-                    import.meta.env.VITE_URL
-                }/post/all?page=${currentPage}&pageSize=${pageSize}`
-            );
-            const totalCount = response.data.postPages;
-            const likes = response.data.likes;
-            const followers = response.data.followers;
-            const tmpComments = response.data.comments;
-            const tmpPosts = response.data.posts;
+            await axios
+                .get(
+                    `${
+                        import.meta.env.VITE_URL
+                    }/post/all?page=${currentPage}&pageSize=${pageSize}`
+                )
+                .then((response) => {
+                    console.log(response.data);
+                    const tmpPosts = response.data.posts;
+                    const followers = response.data.followers;
 
-            const calculatedTotalPages = Math.ceil(totalCount / pageSize);
-            setTotalPages(calculatedTotalPages);
-
-            tmpPosts.forEach((post) => {
-                let totalLikes = 0;
-                post.userLiked = false;
-
-                let totalFollowers = 0;
-                post.userFollowed = false;
-
-                post.comments = [];
-
-                likes.forEach((like) => {
-                    if (like.postId === post.id) {
-                        totalLikes++;
-
-                        if (
-                            state.isAuthenticated &&
-                            like.userId == state.user.id
-                        ) {
-                            post.userLiked = true;
-                        }
-                    }
+                    const processedPosts = tmpPosts.map((post) =>
+                        processPost(post, state, followers)
+                    );
+                    setPosts(processedPosts);
+                    setLoading(false);
+                    setTotalPages(
+                        Math.ceil(response.data.postPages / pageSize)
+                    );
                 });
-                followers.forEach((follower) => {
-                    if (follower.followId == post.userId) {
-                        totalFollowers++;
-
-                        if (
-                            state.isAuthenticated &&
-                            follower.userId == state.user.id
-                        ) {
-                            post.userFollowed = true;
-                        }
-                    }
-                });
-
-                post.totalLikes = totalLikes++;
-                post.totalFollowers = totalFollowers++;
-
-                tmpComments.forEach((comment) => {
-                    if (comment.postId === post.id) {
-                        post.comments.push(comment);
-                    }
-                });
-            });
-            setPosts(tmpPosts);
         } catch (error) {
             console.error("Error fetching posts:", error);
         }
     }
 
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    function handlePageChange(event, page) {
+        setCurrentPage(page);
+        window.scrollTo(0, 0);
+    }
+
     return (
-        <Grid container spacing={2} sx={{ width: "70%", overflow: "" }}>
+        <Grid container spacing={2} sx={{ width: "85%" }}>
+            {state.isAuthenticated ? (
+                <Grid item xs={12}>
+                    <CreatePost fetchPosts={fetchPosts} />
+                </Grid>
+            ) : null}
             <Grid item xs={12}>
-                <h1 style={{ textAlign: "center", fontStyle: "italic" }}>
+                <Typography
+                    variant="h4"
+                    align="center"
+                    sx={{ fontStyle: "italic" }}
+                >
                     Opslag
-                </h1>
+                </Typography>
                 {posts.map((post) => (
                     <Post
                         key={post.id}
                         id={post.id}
+                        username={post.user.username}
                         userId={post.userId}
                         totalLikes={post.totalLikes}
                         userLiked={post.userLiked}
@@ -101,9 +84,10 @@ const FrontPage = () => {
                         title={post.title}
                         date={post.updatedAt}
                         description={post.content}
-                        image={selfie}
+                        image={post.image}
                         comments={post.comments}
-                        sx={{ maxWidth: "100%", overflow: "hidden" }} // Adjust styles for Post component
+                        tags={post.tags}
+                        sx={{ maxWidth: "100%", overflow: "hidden" }}
                     />
                 ))}
             </Grid>
@@ -113,7 +97,7 @@ const FrontPage = () => {
                         count={totalPages}
                         shape="rounded"
                         page={currentPage}
-                        onChange={(event, page) => setCurrentPage(page)}
+                        onChange={handlePageChange}
                     />
                 </Grid>
             </Grid>

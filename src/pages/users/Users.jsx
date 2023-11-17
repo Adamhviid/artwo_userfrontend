@@ -16,7 +16,6 @@ const Users = () => {
 
     useEffect(() => {
         getUsers();
-        console.log(users);
     }, []);
 
     async function getUsers() {
