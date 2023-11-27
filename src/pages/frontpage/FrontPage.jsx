@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Pagination, Grid, Typography } from "@mui/material";
+import "./FrontPage.css";
 
 import { useAuth } from "../../AuthContext";
 import Post from "../../components/Posts/Post";

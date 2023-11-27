@@ -15,20 +15,7 @@ import FrontPage from "./pages/frontpage/FrontPage";
 import Users from "./pages/users/Users";
 import Search from "./components/Search";
 import SinglePost from "./pages/SinglePost/SinglePost";
-
-import Rollespil from "./pages/underersider/Rollespil";
-import Biler from "./pages/underersider/Biler";
-import Fest from "./pages/underersider/Fest";
-import Fodbold from "./pages/underersider/Fodbold";
-import Hardware from "./pages/underersider/Hardware";
-import Kæledyr from "./pages/underersider/Kæledyr";
-import Kendte from "./pages/underersider/Kendte";
-import Makeup from "./pages/underersider/Makeup";
-import Mobiltelefoni from "./pages/underersider/Mobiltelefoni";
-import Politik from "./pages/underersider/Politik";
-import Underholdning from "./pages/underersider/Underholdning";
-import Problemer from "./pages/underersider/Problemer";
-import Kærlighed from "./pages/underersider/Kærlighed";
+import Contact from "./components/contact/Contact";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <AuthProvider>
@@ -53,6 +40,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     <Route path="/users" element={<Users />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/p/:id" element={<SinglePost />} />
+                    <Route path="/contact" element={<Contact />} />
                 </Routes>
                 <Sidebar />
             </Container>

@@ -45,11 +45,6 @@
     font-size: 1rem;
 }
 
-.sidebar a:hover {
-    text-decoration: underline;
-    font-style: italic;
-}
-
 .contact{
     cursor: pointer;
     position: absolute;

@@ -98,7 +98,15 @@ const Sidebar = () => {
                         </li>
                     ))}
                 </ul>
-                <div className="contact">Hjælp og Support</div>
+                <div className="contact">
+                    {/* Redirect to the contact page */}
+                    <Link
+                        to="/contact"
+                        style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                        Hjælp og Support
+                    </Link>
+                </div>
             </div>
         </div>
     );

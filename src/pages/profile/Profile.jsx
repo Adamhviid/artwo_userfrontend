@@ -26,11 +26,11 @@ const Profile = () => {
 
     return (
         <div>
-            <h1>Profile</h1>
-            <p>Username: {user.username}</p>
-            <p>Email: {user.email}</p>
-            <p>First name: {user.firstName}</p>
-            <p>Last name: {user.lastName}</p>
+            <h1>Velkommen</h1>
+            <p>Brugernavn: {user.username}</p>
+            <p>E-mail: {user.email}</p>
+            <p>Fornavn: {user.firstName}</p>
+            <p>Efternavn: {user.lastName}</p>
         </div>
     );
 };
