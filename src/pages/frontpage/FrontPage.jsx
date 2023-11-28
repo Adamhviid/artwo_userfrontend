@@ -30,7 +30,6 @@ const FrontPage = () => {
                     }/post/all?page=${currentPage}&pageSize=${pageSize}`
                 )
                 .then((response) => {
-                    console.log(response.data);
                     const tmpPosts = response.data.posts;
                     const followers = response.data.followers;
 
