@@ -14,7 +14,7 @@ import Profile from "./pages/profile/Profile";
 import FrontPage from "./pages/frontpage/FrontPage";
 import Users from "./pages/users/Users";
 import Search from "./components/Search";
-import SinglePost from "./pages/SinglePost/SinglePost";
+import SinglePost from "./pages/singlePost/SinglePost";
 import Contact from "./components/contact/Contact";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
