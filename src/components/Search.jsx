@@ -26,6 +26,7 @@ const Search = () => {
             type: "Kommentarer",
             title: comment.content,
             id: comment.id,
+            postId: comment.postId,
         })),
     ];
 
@@ -74,6 +75,9 @@ const Search = () => {
                 options={options}
                 groupBy={(option) => option.type}
                 getOptionLabel={(option) => option.title}
+                isOptionEqualToValue={(option, value) =>
+                    option.id === value.id && option.type === value.type
+                }
                 renderOption={(props, option) => {
                     let link;
                     switch (option.type) {
@@ -86,7 +90,7 @@ const Search = () => {
                             break;
 
                         case "Kommentarer":
-                            link = `/p/${option.id}`;
+                            link = `/p/${option.postId}`;
                             break;
                     }
 
