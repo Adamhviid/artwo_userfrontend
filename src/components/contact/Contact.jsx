@@ -2,13 +2,14 @@ import React, { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import styled from "styled-components";
 import Alert from "@mui/material/Alert";
+import "./Contact.css";
 
 const Contact = () => {
     const form = useRef();
     const emailServiceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const templateId = import.meta.env.VITE_TEMPLATE_ID;
     const publicKey = import.meta.env.VITE_PUBLIC_KEY;
-    const [emailSent, setEmailSent] = useState(false); // State to manage alert visibility
+    const [emailSent, setEmailSent] = useState(false);
 
     const sendEmail = async (e) => {
         e.preventDefault();
@@ -18,8 +19,8 @@ const Contact = () => {
             .then(
                 (result) => {
                     console.log(result.text);
-                    setEmailSent(true); // Set state to display the alert
-                    form.current.reset(); // Reset the form fields
+                    setEmailSent(true);
+                    form.current.reset();
                 },
                 (error) => {
                     console.log(error.text);
@@ -27,22 +28,28 @@ const Contact = () => {
             );
     };
     return (
-        <StyledContactForm>
-            <form ref={form} onSubmit={sendEmail}>
-                <label>Dit navn</label>
-                <input type="text" name="user_name" />
-                <label>Din e-mail</label>
-                <input type="email" name="user_email" />
-                <label>Din besked</label>
-                <textarea name="message" />
-                <input type="submit" value="Send" />
-            </form>
-            {emailSent && (
-                <Alert severity="success" color="info">
-                    E-mail var sendt!
-                </Alert>
-            )}
-        </StyledContactForm>
+        <>
+            <StyledContactForm>
+                <form ref={form} onSubmit={sendEmail}>
+                    <label>Dit navn</label>
+                    <input type="text" name="user_name" />
+                    <label>Din e-mail</label>
+                    <input type="email" name="user_email" />
+                    <label>Din besked</label>
+                    <textarea name="message" />
+                    <input type="submit" value="Send" />
+                </form>
+                {emailSent && (
+                    <Alert severity="success" color="info">
+                        E-mail var sendt!
+                    </Alert>
+                )}
+            </StyledContactForm>
+            <div className="info">
+                Venligst tjek at e-mailen er korrekt, da du vil modtage et svar
+                til denne.
+            </div>
+        </>
     );
 };
 
