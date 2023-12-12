@@ -15,13 +15,11 @@ export default function processPost(post, state, followers) {
     likes.forEach((like) => {
         totalLikes++;
 
-        if (
-            state.isAuthenticated &&
-            like.userId == state.user.id
-        ) {
+        if (state.isAuthenticated && like.userId == state.user.id) {
             post.userLiked = true;
         }
     });
+
     post.totalLikes = totalLikes++;
 
     followers.forEach((follower) => {

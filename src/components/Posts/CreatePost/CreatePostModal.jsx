@@ -70,18 +70,22 @@ const CreatePostModal = (props) => {
 
         if (title != "") {
             axios
-                .post(`${import.meta.env.VITE_URL}/post/create`, formData, {
-                    headers: {
-                        token: localStorage.getItem("token"),
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
+                .post(
+                    import.meta.env.VITE_RABBITMQ_URL + "/send-post",
+                    formData,
+                    {
+                        headers: {
+                            token: localStorage.getItem("token"),
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                )
                 .then(() => {
                     fetchPosts();
                     handleClose();
                 })
                 .catch((error) => {
-                    console.log(error.response);
+                    console.error(error);
                 });
         }
     }
@@ -94,7 +98,7 @@ const CreatePostModal = (props) => {
                 setPopularTags(tags);
             })
             .catch((error) => {
-                console.log(error.response);
+                console.error(error.response);
             });
     }
 

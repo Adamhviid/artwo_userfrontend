@@ -21,6 +21,7 @@ import { Favorite as FavoriteIcon } from "@mui/icons-material";
 import SendIcon from "@mui/icons-material/Send";
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import Comment from "./Comment";
 
@@ -193,6 +194,18 @@ const Post = (props) => {
             });
     }
 
+    async function handleDelete() {
+        if (window.confirm("Slet opslag? Dette kan ikke fortrydes")) {
+            await axios
+                .post(`${import.meta.env.VITE_RABBITMQ_URL}/delete-post`, {
+                    id: id,
+                })
+                .then(() => {
+                    console.log("Post deleted" + id);
+                });
+        }
+    }
+
     return (
         <Card sx={{ width: "100%", margin: "20px" }}>
             <Grid container spacing={2}>
@@ -218,18 +231,34 @@ const Post = (props) => {
                     </Link>
                 </Grid>
                 <Grid item xs={1}>
-                    {!followed ? (
-                        <AddIcon
-                            sx={{
-                                position: "relative",
-                                right: "100%",
-                                top: "50%",
-                                cursor: "pointer",
-                            }}
-                            onClick={() => handleFollow()}
-                        />
+                    {state.isAuthenticated && userId == state.user.id ? (
+                        <>
+                            <DeleteIcon
+                                sx={{
+                                    position: "relative",
+                                    right: "100%",
+                                    top: "50%",
+                                    cursor: "pointer",
+                                }}
+                                onClick={() => handleDelete()}
+                            />
+                        </>
                     ) : (
-                        <CheckIcon sx={{ paddingTop: "5px" }} />
+                        <>
+                            {!followed ? (
+                                <AddIcon
+                                    sx={{
+                                        position: "relative",
+                                        right: "100%",
+                                        top: "50%",
+                                        cursor: "pointer",
+                                    }}
+                                    onClick={() => handleFollow()}
+                                />
+                            ) : (
+                                <CheckIcon sx={{ paddingTop: "5px" }} />
+                            )}
+                        </>
                     )}
                 </Grid>
             </Grid>
