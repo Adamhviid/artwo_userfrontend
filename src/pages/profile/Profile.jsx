@@ -9,18 +9,18 @@ const Profile = () => {
     const { username } = useParams();
 
     useEffect(() => {
-        if (state.isAuthenticated === false) {
-            fetchUser();
-        } else {
-            setUser(state.user);
-        }
+        fetchUser();
     }, [username]);
 
     async function fetchUser() {
         await axios
             .get(`${import.meta.env.VITE_URL}/user/get/` + username)
             .then((response) => {
-                setUser(response.data);
+                if (response.data != null) {
+                    setUser(response.data);
+                } else {
+                    setUser({});
+                }
             });
     }
 
