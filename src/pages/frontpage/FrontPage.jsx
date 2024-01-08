@@ -13,16 +13,12 @@ const FrontPage = () => {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const pageSize = 1;
+    const pageSize = 10;
 
     const { state } = useAuth();
 
     useEffect(() => {
         fetchPosts();
-
-        posts.forEach((post) => {
-            console.log(post.userFollowed);
-        });
     }, [currentPage, loading]);
 
     async function fetchPosts() {
@@ -41,7 +37,6 @@ const FrontPage = () => {
                         processPost(post, state, followers)
                     );
                     setPosts(processedPosts);
-                    console.log(posts);
 
                     setLoading(false);
                     setTotalPages(

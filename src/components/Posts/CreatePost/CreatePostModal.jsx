@@ -69,7 +69,7 @@ const CreatePostModal = (props) => {
         formData.append("userId", state.user.id);
 
         if (title != "") {
-            axios
+            await axios
                 .post(
                     import.meta.env.VITE_RABBITMQ_URL + "/send-post",
                     formData,
