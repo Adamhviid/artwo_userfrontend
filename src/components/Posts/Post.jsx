@@ -201,6 +201,7 @@ const Post = (props) => {
                     id: id,
                 })
                 .then(() => {
+                    window.location.reload();
                     console.log("Post deleted" + id);
                 });
         }

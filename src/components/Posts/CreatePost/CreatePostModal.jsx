@@ -70,16 +70,12 @@ const CreatePostModal = (props) => {
 
         if (title != "") {
             await axios
-                .post(
-                    import.meta.env.VITE_RABBITMQ_URL + "/send-post",
-                    formData,
-                    {
-                        headers: {
-                            token: localStorage.getItem("token"),
-                            "Content-Type": "multipart/form-data",
-                        },
-                    }
-                )
+                .post(`${import.meta.env.VITE_URL}/post/create`, formData, {
+                    headers: {
+                        token: localStorage.getItem("token"),
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
                 .then(() => {
                     fetchPosts();
                     handleClose();
