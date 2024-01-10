@@ -30,10 +30,7 @@ const Nav = () => {
 
     let settings = [];
     if (state.isAuthenticated == true) {
-        settings = [
-            { label: "Mine posts", url: "profile/posts" },
-            { label: "Profil", url: "/u/" + state.user.username },
-        ];
+        settings = [{ label: "Profil", url: "/u/" + state.user.username }];
     }
     const pages = [{ label: "Brugere", url: "/users" }];
 

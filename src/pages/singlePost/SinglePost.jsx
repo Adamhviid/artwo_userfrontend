@@ -44,15 +44,16 @@ const SinglePost = () => {
             <Post
                 key={post.id}
                 id={post.id}
-                title={post.title}
-                description={post.content}
                 username={post.user.username}
-                userId={post.user.id}
+                userId={post.userId}
                 totalLikes={post.totalLikes}
                 userLiked={post.userLiked}
                 totalFollowers={post.totalFollowers}
                 userFollowed={post.userFollowed}
+                title={post.title}
                 date={post.updatedAt}
+                description={post.content}
+                image={post.image}
                 comments={post.comments}
                 tags={post.tags}
                 sx={{ maxWidth: "100%", overflow: "hidden" }}
