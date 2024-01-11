@@ -92,9 +92,12 @@ const Sidebar = () => {
                 <ul>
                     {tags.map((tag, index) => (
                         <li key={index}>
-                            {/* <Link to={`/${gruppe.toLowerCase()}`}> */}
-                            {tag.tag} ({tag.count} opslag)
-                            {/*  </Link> */}
+                            <Link
+                                to={`/tag/${tag.tag}`}
+                                style={{ color: "#61B44C" }}
+                            >
+                                {tag.tag} ({tag.count})
+                            </Link>
                         </li>
                     ))}
                 </ul>

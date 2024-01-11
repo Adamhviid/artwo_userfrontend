@@ -278,7 +278,9 @@ const Post = (props) => {
             )}
             <CardContent>
                 {tags.map((tag, index) => (
-                    <Chip key={index} label={tag} sx={{ margin: "5px" }} />
+                    <Link to={`/tag/${tag}`} key={index}>
+                        <Chip key={index} label={tag} sx={{ margin: "5px" }} />
+                    </Link>
                 ))}
                 {description == "" ? null : (
                     <Typography variant="body2" color="text.secondary">

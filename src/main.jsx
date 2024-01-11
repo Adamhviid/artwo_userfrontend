@@ -16,6 +16,7 @@ import Users from "./pages/users/Users";
 import Search from "./components/Search";
 import SinglePost from "./pages/singlePost/SinglePost";
 import Contact from "./components/contact/Contact";
+import Tag from "./pages/tag/Tag";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <AuthProvider>
@@ -40,6 +41,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     <Route path="/users" element={<Users />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/p/:id" element={<SinglePost />} />
+                    <Route path="/tag/:tag" element={<Tag />} />
                     <Route path="/contact" element={<Contact />} />
                 </Routes>
                 <Sidebar />
