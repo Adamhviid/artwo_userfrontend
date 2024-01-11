@@ -32,7 +32,11 @@ const Nav = () => {
     if (state.isAuthenticated == true) {
         settings = [{ label: "Profil", url: "/u/" + state.user.username }];
     }
-    const pages = [{ label: "Brugere", url: "/users" }];
+    const pages = [
+        { label: "Brugere", url: "/users" },
+        { label: "Mega chat", url: "/forum" },
+        { label: "Kontakt", url: "/contact" },
+    ];
 
     const navigate = useNavigate();
 

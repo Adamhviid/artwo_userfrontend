@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 
 import processPost from "../../components/Posts/ProcessPost";
 import Post from "../../components/Posts/Post";
@@ -43,6 +43,12 @@ const Tag = () => {
 
     return (
         <Grid container spacing={2} sx={{ width: "85%" }}>
+            <Typography
+                variant="h4"
+                sx={{ marginBottom: "20px", textAlign: "center" }}
+            >
+                {tag.toUpperCase()}
+            </Typography>
             {posts.map((post) => (
                 <Post
                     key={post.id}

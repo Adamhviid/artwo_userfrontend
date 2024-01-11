@@ -17,6 +17,7 @@ import Search from "./components/Search";
 import SinglePost from "./pages/singlePost/SinglePost";
 import Contact from "./pages/contact/Contact";
 import Tag from "./pages/tag/Tag";
+import Forum from "./pages/forum/Forum";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <AuthProvider>
@@ -43,6 +44,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     <Route path="/p/:id" element={<SinglePost />} />
                     <Route path="/tag/:tag" element={<Tag />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/forum" element={<Forum />} />
                 </Routes>
                 <Sidebar />
             </Container>
