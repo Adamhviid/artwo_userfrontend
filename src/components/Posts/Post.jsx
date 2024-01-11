@@ -194,15 +194,16 @@ const Post = (props) => {
             });
     }
 
-    async function handleDelete() {
+    function handleDelete() {
         if (window.confirm("Slet opslag? Dette kan ikke fortrydes")) {
-            await axios
-                .post(`${import.meta.env.VITE_RABBITMQ_URL}/delete-post`, {
-                    id: id,
+            axios
+                .post(`${import.meta.env.VITE_URL}/post/delete/` + id, {
+                    headers: {
+                        token: localStorage.getItem("token"),
+                    },
                 })
                 .then(() => {
                     window.location.reload();
-                    console.log("Post deleted" + id);
                 });
         }
     }
